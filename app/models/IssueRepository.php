@@ -27,4 +27,19 @@ class IssueRepository
             json_encode($issues, JSON_PRETTY_PRINT)
         );
     }
+
+    public function findById(string $id): ?array
+{
+    $issues = $this->getAll();
+
+    foreach ($issues as $issue) {
+
+        if (($issue['id'] ?? '') === $id) {
+            return $issue;
+        }
+
+    }
+
+    return null;
+}
 }

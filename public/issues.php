@@ -7,17 +7,19 @@ $repo = new IssueRepository();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $newIssue = [
+        'id' => uniqid(),
         'summary' => $_POST['summary'] ?? '',
         'description' => $_POST['description'] ?? '',
         'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
         'priority' => $_POST['priority'] ?? 'Low',
         'status' => 'Open',
-        'created_at' => date('Y-m-d H:i:s')
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => null
     ];
 
     $repo->add($newIssue);
 
-    header('Location: index.php');
+    header('Location: issues.php');
     exit;
 }
 
@@ -30,7 +32,7 @@ $issues = $repo->getAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issue Tracker</title>
+    <title>Issues</title>
 
     <style>
 
@@ -94,6 +96,14 @@ $issues = $repo->getAll();
             font-size: 12px;
             margin-left: 10px;
             background: #dfe1e6;
+        }
+
+        .view-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #0052cc;
+            font-weight: bold;
         }
 
         /* MODAL */
@@ -174,11 +184,16 @@ $issues = $repo->getAll();
 <div class="container">
 
     <div class="top-bar">
+
         <h2>All Issues</h2>
 
-        <button class="create-btn" onclick="openModal()">
+        <button
+            class="create-btn"
+            onclick="openModal()"
+        >
             Create Issue
         </button>
+
     </div>
 
     <?php if (empty($issues)): ?>
@@ -212,6 +227,13 @@ $issues = $repo->getAll();
                     <?= htmlspecialchars($issue['created_at'] ?? '') ?>
 
                 </div>
+
+                <a
+                    href="issue.php?id=<?= $issue['id'] ?? '' ?>"
+                    class="view-link"
+                >
+                    View Details
+                </a>
 
             </div>
 
