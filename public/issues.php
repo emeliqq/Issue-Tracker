@@ -87,6 +87,7 @@ $issues = $repo->getAll();
             color: #666;
             font-size: 14px;
             margin-top: 10px;
+            line-height: 1.7;
         }
 
         .priority {
@@ -223,8 +224,17 @@ $issues = $repo->getAll();
 
                     <br><br>
 
-                    Created at:
-                    <?= htmlspecialchars($issue['created_at'] ?? '') ?>
+                    <?php if (!empty($issue['updated_at'])): ?>
+
+                        Last updated:
+                        <?= htmlspecialchars($issue['updated_at']) ?>
+
+                    <?php else: ?>
+
+                        Created at:
+                        <?= htmlspecialchars($issue['created_at'] ?? '') ?>
+
+                    <?php endif; ?>
 
                 </div>
 
