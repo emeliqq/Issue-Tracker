@@ -48,124 +48,55 @@ if (!$issue) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Details</title>
 
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f5f7;
-            margin: 0;
-        }
-
-        header {
-            background: #1d2125;
-            color: white;
-            padding: 20px;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 900px;
-            margin: 30px auto;
-        }
-
-        .issue-box {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .section {
-            margin-bottom: 35px;
-        }
-
-        .label {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .value {
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .edit-btn,
-        .save-btn,
-        .cancel-btn,
-        .back-btn {
-            background: #0052cc;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cancel-btn {
-            background: #666;
-        }
-
-        input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-            font-family: Arial, sans-serif;
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .inline-form {
-            max-width: 600px;
-        }
-
-        .meta {
-            color: #666;
-            font-size: 14px;
-        }
-
-    </style>
+    <link
+        rel="stylesheet"
+        href="assets/css/issue.css"
+    >
 
 </head>
 <body>
 
-<header>
-    <h1>Issue Details</h1>
+<header class="topbar">
+
+    <a
+        href="issues.php"
+        class="back-link"
+    >
+        ← Back to Issues
+    </a>
+
 </header>
 
-<div class="container">
+<div class="page-container">
 
-    <div class="issue-box">
+    <!-- LEFT -->
+
+    <div class="content-column">
+
+        <div class="issue-id">
+            <?= htmlspecialchars($issue['id'] ?? '') ?>
+        </div>
 
         <!-- SUMMARY -->
 
-        <div class="section">
-
-            <div class="label">
-                Summary
-            </div>
+        <div class="summary-section">
 
             <div id="summary-view">
 
-                <div class="value">
-                    <?= htmlspecialchars($issue['summary'] ?? '') ?>
-                </div>
+                <div class="summary-row">
 
-                <button
-                    class="edit-btn"
-                    onclick="toggleSection('summary', true)"
-                >
-                    Edit
-                </button>
+                    <h1 class="summary-title">
+                        <?= htmlspecialchars($issue['summary'] ?? '') ?>
+                    </h1>
+
+                    <button
+                        class="edit-btn"
+                        onclick="toggleSection('summary', true)"
+                    >
+                        Edit
+                    </button>
+
+                </div>
 
             </div>
 
@@ -174,10 +105,7 @@ if (!$issue) {
                 style="display:none;"
             >
 
-                <form
-                    method="POST"
-                    class="inline-form"
-                >
+                <form method="POST">
 
                     <input
                         type="hidden"
@@ -197,20 +125,24 @@ if (!$issue) {
                         value="<?= htmlspecialchars($issue['summary']) ?>"
                     >
 
-                    <button
-                        type="submit"
-                        class="save-btn"
-                    >
-                        Save
-                    </button>
+                    <div class="button-group">
 
-                    <button
-                        type="button"
-                        class="cancel-btn"
-                        onclick="toggleSection('summary', false)"
-                    >
-                        Cancel
-                    </button>
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-btn"
+                            onclick="toggleSection('summary', false)"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
 
                 </form>
 
@@ -220,17 +152,11 @@ if (!$issue) {
 
         <!-- DESCRIPTION -->
 
-        <div class="section">
+        <div class="content-box">
 
-            <div class="label">
-                Description
-            </div>
+            <div class="section-header">
 
-            <div id="description-view">
-
-                <div class="value">
-                    <?= nl2br(htmlspecialchars($issue['description'] ?? '')) ?>
-                </div>
+                <h2>Description</h2>
 
                 <button
                     class="edit-btn"
@@ -241,15 +167,24 @@ if (!$issue) {
 
             </div>
 
+            <div id="description-view">
+
+                <div class="content-text">
+                    <?= nl2br(
+                        htmlspecialchars(
+                            trim($issue['description'] ?? '')
+                        )
+                    ) ?>
+                </div>
+
+            </div>
+
             <div
                 id="description-edit"
                 style="display:none;"
             >
 
-                <form
-                    method="POST"
-                    class="inline-form"
-                >
+                <form method="POST">
 
                     <input
                         type="hidden"
@@ -267,20 +202,24 @@ if (!$issue) {
                         name="value"
                     ><?= htmlspecialchars($issue['description']) ?></textarea>
 
-                    <button
-                        type="submit"
-                        class="save-btn"
-                    >
-                        Save
-                    </button>
+                    <div class="button-group">
 
-                    <button
-                        type="button"
-                        class="cancel-btn"
-                        onclick="toggleSection('description', false)"
-                    >
-                        Cancel
-                    </button>
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-btn"
+                            onclick="toggleSection('description', false)"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
 
                 </form>
 
@@ -290,36 +229,39 @@ if (!$issue) {
 
         <!-- STEPS -->
 
-        <div class="section">
+        <div class="content-box">
 
-            <div class="label">
-                Steps to reproduce
-            </div>
+            <div class="section-header">
 
-            <div id="steps_to_reproduce-view">
-
-                <div class="value">
-                    <?= nl2br(htmlspecialchars($issue['steps_to_reproduce'] ?? '')) ?>
-                </div>
+                <h2>Steps to reproduce</h2>
 
                 <button
                     class="edit-btn"
-                    onclick="toggleSection('steps_to_reproduce', true)"
+                    onclick="toggleSection('steps', true)"
                 >
                     Edit
                 </button>
 
             </div>
 
+            <div id="steps-view">
+
+                <div class="content-text">
+                    <?= nl2br(
+                        htmlspecialchars(
+                            trim($issue['steps_to_reproduce'] ?? '')
+                        )
+                    ) ?>
+                </div>
+
+            </div>
+
             <div
-                id="steps_to_reproduce-edit"
+                id="steps-edit"
                 style="display:none;"
             >
 
-                <form
-                    method="POST"
-                    class="inline-form"
-                >
+                <form method="POST">
 
                     <input
                         type="hidden"
@@ -337,20 +279,24 @@ if (!$issue) {
                         name="value"
                     ><?= htmlspecialchars($issue['steps_to_reproduce']) ?></textarea>
 
-                    <button
-                        type="submit"
-                        class="save-btn"
-                    >
-                        Save
-                    </button>
+                    <div class="button-group">
 
-                    <button
-                        type="button"
-                        class="cancel-btn"
-                        onclick="toggleSection('steps_to_reproduce', false)"
-                    >
-                        Cancel
-                    </button>
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+
+                        <button
+                            type="button"
+                            class="cancel-btn"
+                            onclick="toggleSection('steps', false)"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
 
                 </form>
 
@@ -358,162 +304,177 @@ if (!$issue) {
 
         </div>
 
-        <!-- STATUS -->
+    </div>
 
-        <div class="section">
+    <!-- RIGHT -->
 
-            <div class="label">
-                Status
+    <div class="sidebar-column">
+
+        <!-- STATUS + SEVERITY -->
+
+        <div class="sidebar-box">
+
+            <!-- STATUS -->
+
+            <div class="sidebar-form">
+
+                <h3>Status</h3>
+
+                <form method="POST">
+
+                    <input
+                        type="hidden"
+                        name="id"
+                        value="<?= htmlspecialchars($issue['id']) ?>"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="field"
+                        value="status"
+                    >
+
+                    <div class="sidebar-row">
+
+                        <select name="value">
+
+                            <option
+                                value="Open"
+                                <?= (($issue['status'] ?? '') === 'Open') ? 'selected' : '' ?>
+                            >
+                                Open
+                            </option>
+
+                            <option
+                                value="In Progress"
+                                <?= (($issue['status'] ?? '') === 'In Progress') ? 'selected' : '' ?>
+                            >
+                                In Progress
+                            </option>
+
+                            <option
+                                value="Resolved"
+                                <?= (($issue['status'] ?? '') === 'Resolved') ? 'selected' : '' ?>
+                            >
+                                Resolved
+                            </option>
+
+                        </select>
+
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+
+                    </div>
+
+                </form>
+
             </div>
 
-            <form
-                method="POST"
-                class="inline-form"
-            >
+            <hr>
 
-                <input
-                    type="hidden"
-                    name="id"
-                    value="<?= htmlspecialchars($issue['id']) ?>"
-                >
+            <!-- PRIORITY -->
 
-                <input
-                    type="hidden"
-                    name="field"
-                    value="status"
-                >
+            <div class="sidebar-form">
 
-                <select name="value">
+                <h3>Severity</h3>
 
-                    <option
-                        value="Open"
-                        <?= (($issue['status'] ?? '') === 'Open') ? 'selected' : '' ?>
+                <form method="POST">
+
+                    <input
+                        type="hidden"
+                        name="id"
+                        value="<?= htmlspecialchars($issue['id']) ?>"
                     >
-                        Open
-                    </option>
 
-                    <option
-                        value="In Progress"
-                        <?= (($issue['status'] ?? '') === 'In Progress') ? 'selected' : '' ?>
+                    <input
+                        type="hidden"
+                        name="field"
+                        value="priority"
                     >
-                        In Progress
-                    </option>
 
-                    <option
-                        value="Resolved"
-                        <?= (($issue['status'] ?? '') === 'Resolved') ? 'selected' : '' ?>
-                    >
-                        Resolved
-                    </option>
+                    <div class="sidebar-row">
 
-                </select>
+                        <select name="value">
 
-                <button
-                    type="submit"
-                    class="save-btn"
-                >
-                    Save
-                </button>
+                            <option
+                                value="Low"
+                                <?= (($issue['priority'] ?? '') === 'Low') ? 'selected' : '' ?>
+                            >
+                                Low
+                            </option>
 
-            </form>
+                            <option
+                                value="Medium"
+                                <?= (($issue['priority'] ?? '') === 'Medium') ? 'selected' : '' ?>
+                            >
+                                Medium
+                            </option>
+
+                            <option
+                                value="High"
+                                <?= (($issue['priority'] ?? '') === 'High') ? 'selected' : '' ?>
+                            >
+                                High
+                            </option>
+
+                        </select>
+
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
 
         </div>
 
-        <!-- PRIORITY -->
+        <!-- PEOPLE + DATES -->
 
-        <div class="section">
+        <div class="sidebar-box">
 
-            <div class="label">
-                Priority
+            <div class="meta-item">
+
+                <strong>Reporter:</strong>
+                Admin
+
             </div>
 
-            <form
-                method="POST"
-                class="inline-form"
-            >
+            <div class="meta-item">
 
-                <input
-                    type="hidden"
-                    name="id"
-                    value="<?= htmlspecialchars($issue['id']) ?>"
-                >
+                <strong>Updater:</strong>
+                Admin
 
-                <input
-                    type="hidden"
-                    name="field"
-                    value="priority"
-                >
-
-                <select name="value">
-
-                    <option
-                        value="Low"
-                        <?= (($issue['priority'] ?? '') === 'Low') ? 'selected' : '' ?>
-                    >
-                        Low
-                    </option>
-
-                    <option
-                        value="Medium"
-                        <?= (($issue['priority'] ?? '') === 'Medium') ? 'selected' : '' ?>
-                    >
-                        Medium
-                    </option>
-
-                    <option
-                        value="High"
-                        <?= (($issue['priority'] ?? '') === 'High') ? 'selected' : '' ?>
-                    >
-                        High
-                    </option>
-
-                </select>
-
-                <button
-                    type="submit"
-                    class="save-btn"
-                >
-                    Save
-                </button>
-
-            </form>
-
-        </div>
-
-        <!-- CREATED -->
-
-        <div class="section">
-
-            <div class="label">
-                Created at
             </div>
 
-            <div class="meta">
+            <hr>
+
+            <div class="meta-item">
+
+                <strong>Created: </strong>
+
                 <?= htmlspecialchars($issue['created_at'] ?? '') ?>
+
+            </div>
+
+            <div class="meta-item">
+
+                <strong>Last update: </strong>
+
+                <?= htmlspecialchars($issue['updated_at'] ?? '-----') ?>
+
             </div>
 
         </div>
-
-        <!-- UPDATED -->
-
-        <div class="section">
-
-            <div class="label">
-                Last updated
-            </div>
-
-            <div class="meta">
-                <?= htmlspecialchars($issue['updated_at'] ?? 'Never updated') ?>
-            </div>
-
-        </div>
-
-        <a
-            href="issues.php"
-            class="back-btn"
-        >
-            ← Back to Issues
-        </a>
 
     </div>
 

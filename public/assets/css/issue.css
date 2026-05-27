@@ -1,0 +1,170 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f5f7;
+    color: #172b4d;
+}
+
+.topbar {
+    background: white;
+    border-bottom: 1px solid #dfe1e6;
+    padding: 16px 32px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #0052cc;
+    font-weight: bold;
+}
+
+.page-container {
+    display: flex;
+    gap: 24px;
+    padding: 24px 32px;
+    align-items: flex-start;
+}
+
+.content-column {
+    flex: 3;
+}
+
+.sidebar-column {
+    flex: 1;
+}
+
+.issue-id {
+    color: #6b778c;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.summary-section {
+    background: white;
+    border-radius: 22px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.summary-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.content-box,
+.sidebar-box {
+    background: white;
+    border-radius: 22px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.section-header h2,
+.sidebar-box h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.content-text {
+    line-height: 1.6;
+    text-align: left;
+    word-break: break-word;
+}
+
+.edit-btn,
+.save-btn,
+.cancel-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.edit-btn,
+.save-btn {
+    background: #0052cc;
+    color: white;
+}
+
+.cancel-btn {
+    background: #dfe1e6;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: flex-end;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #c1c7d0;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin-top: 8px;
+    font-family: Arial, sans-serif;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.meta-item {
+    margin-bottom: 14px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.sidebar-form {
+    margin-bottom: 20px;
+}
+
+.sidebar-form:last-child {
+    margin-bottom: 0;
+}
+
+.sidebar-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.sidebar-row select {
+    margin: 0;
+}
+
+.sidebar-row .save-btn {
+    flex-shrink: 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #dfe1e6;
+    margin: 20px 0;
+}

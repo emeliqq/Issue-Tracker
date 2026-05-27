@@ -1,22 +1,12 @@
 [
     {
-        "id": "6a172fc0eb03f",
+        "id": "QA-35155",
         "summary": "kot mi uciek",
-        "description": "kot mi uciek z domu\r\nsdfsdfs",
+        "description": "kot mi uciek z domu\r\n\r\nExpected result:\r\nKot nie ucieka z domu\r\n\r\nNote:\r\n1. kot uciek wczora",
         "steps_to_reproduce": "1. miej kota\r\n2. zgub kota",
         "priority": "High",
         "status": "Open",
-        "created_at": "2026-05-27 19:54:08",
-        "updated_at": "2026-05-27 20:15:18"
-    },
-    {
-        "id": "6a1735e99c820",
-        "summary": "kora je malo",
-        "description": "kora je frolic",
-        "steps_to_reproduce": "1. daj korze jesc",
-        "priority": "Low",
-        "status": "Open",
-        "created_at": "2026-05-27 20:20:25",
-        "updated_at": "2026-05-27 20:20:34"
+        "created_at": "2026-05-27 21:08:42",
+        "updated_at": "2026-05-27 21:09:31"
     }
 ]
