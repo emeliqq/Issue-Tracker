@@ -1,12 +1,12 @@
 [
     {
-        "id": "QA-35155",
-        "summary": "kot mi uciek",
-        "description": "kot mi uciek z domu\r\n\r\nExpected result:\r\nKot nie ucieka z domu\r\n\r\nNote:\r\n1. kot uciek wczora",
-        "steps_to_reproduce": "1. miej kota\r\n2. zgub kota",
-        "priority": "High",
+        "id": "QA-00001",
+        "summary": "efwef",
+        "description": "wefwe",
+        "steps_to_reproduce": "efwef",
+        "priority": "Medium",
         "status": "Open",
-        "created_at": "2026-05-27 21:08:42",
-        "updated_at": "2026-05-27 21:09:31"
+        "created_at": "2026-05-27 21:18:51",
+        "updated_at": null
     }
 ]

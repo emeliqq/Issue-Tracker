@@ -69,4 +69,28 @@ class IssueRepository
             json_encode($issues, JSON_PRETTY_PRINT)
         );
     }
+
+public function getNextId(): string
+{
+    $issues = $this->getAll();
+
+    if (empty($issues)) {
+        return 'QA-00001';
+    }
+
+    $lastIssue = end($issues);
+
+    $lastId = $lastIssue['id'] ?? 'QA-00000';
+
+    $number = (int) str_replace('QA-', '', $lastId);
+
+    $nextNumber = $number + 1;
+
+    return 'QA-' . str_pad(
+        $nextNumber,
+        5,
+        '0',
+        STR_PAD_LEFT
+    );
+}
 }

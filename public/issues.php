@@ -7,7 +7,7 @@ $repo = new IssueRepository();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $newIssue = [
-        'id' => 'QA-' . rand(1000, 99999),
+        'id' => $repo->getNextId(),
         'summary' => $_POST['summary'] ?? '',
         'description' => $_POST['description'] ?? '',
         'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
