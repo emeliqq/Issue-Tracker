@@ -1,12 +1,72 @@
 [
     {
         "id": "QA-00001",
-        "summary": "efwef",
-        "description": "wefwe",
-        "steps_to_reproduce": "efwef",
+        "summary": "ktos zesral sie jajecznica",
+        "description": "ktos zestral sie jajecznica na 16 pietrze\r\n\r\nExpected result:\r\nNikt nie zasral sie jajecznica\r\n\r\nNote:\r\n1. smierdzi jak chuj\r\n\r\nUPDATE:\r\njednak to bylo na 17",
+        "steps_to_reproduce": "1. wejdz na 16 pietro\r\n2. zobacz obsrane pietro jajecznica",
+        "priority": "Low",
+        "status": "Open",
+        "created_at": "2026-05-27 21:23:19",
+        "updated_at": "2026-05-27 21:46:28"
+    },
+    {
+        "id": "QA-00002",
+        "summary": "kot mi uciek",
+        "description": "kot uciek",
+        "steps_to_reproduce": "1.miej kota\r\n2. zgub kota",
+        "priority": "High",
+        "status": "Open",
+        "created_at": "2026-05-27 23:17:12",
+        "updated_at": null
+    },
+    {
+        "id": "QA-00003",
+        "summary": "kora je",
+        "description": "fef",
+        "steps_to_reproduce": "ewfw",
+        "priority": "Low",
+        "status": "Open",
+        "created_at": "2026-05-27 23:17:24",
+        "updated_at": null
+    },
+    {
+        "id": "QA-00004",
+        "summary": "wfewe",
+        "description": "fwef",
+        "steps_to_reproduce": "wefwef",
+        "priority": "Low",
+        "status": "Open",
+        "created_at": "2026-05-27 23:17:30",
+        "updated_at": null
+    },
+    {
+        "id": "QA-00005",
+        "summary": "Player enters a falling state between the wall and the boxes in the Townhall cell on the Ghost Town map",
+        "description": "It has been observed that the player enters a falling state after jumping into the spot between the wall and the boxes in the Townhall cell on the Ghost Town map.\r\n\r\nExpected result:\r\n\r\nThe player can traverse though the world freely.\r\n\r\nNotes:\r\n\r\n1. Affected mesh: wall, box\r\n2. Player gets stuck",
+        "steps_to_reproduce": "1. Launch the game\r\n\r\n2. Deploy to the Ghost Town map\r\n\r\n3. Teleport to the provided CameraURL\r\n\r\n4. Jump into affected spot\r\n\r\n5. Observe player entering falling state",
         "priority": "Medium",
         "status": "Open",
-        "created_at": "2026-05-27 21:18:51",
-        "updated_at": null
+        "created_at": "2026-05-27 23:18:15",
+        "updated_at": "2026-05-29 22:52:54"
+    },
+    {
+        "id": "QA-00006",
+        "summary": "wdqwdqw",
+        "description": "dwqd",
+        "steps_to_reproduce": "dqwdqw",
+        "priority": "Medium",
+        "status": "Resolved",
+        "created_at": "2026-05-29 20:08:11",
+        "updated_at": "2026-05-29 20:08:24"
+    },
+    {
+        "id": "QA-00007",
+        "summary": "kot mi uciek drugi raz",
+        "description": "kot uciek drugi raz w tym tygodniu\r\n\r\nExpected result:\r\n\r\nkot nie ucieka w ogole\r\n\r\nNote:\r\n\r\n1. Kot zjadl papier",
+        "steps_to_reproduce": "1. miej kota\r\n\r\n2. zgub kota\r\n\r\n3. zgub kota drugi raz",
+        "priority": "High",
+        "status": "In Progress",
+        "created_at": "2026-05-29 22:55:58",
+        "updated_at": "2026-05-29 22:56:17"
     }
 ]

@@ -51,7 +51,9 @@ if (!$issue) {
     <link
         rel="stylesheet"
         href="assets/css/issue.css"
+        
     >
+    <link rel="stylesheet" href="/Issue-Tracker/public/assets/css/global.css">
 
 </head>
 <body>
@@ -66,6 +68,7 @@ if (!$issue) {
     </a>
 
 </header>
+
 
 <div class="page-container">
 
@@ -336,7 +339,10 @@ if (!$issue) {
 
                     <div class="sidebar-row">
 
-                        <select name="value">
+                        <select
+                            name="value"
+                            onchange="this.form.submit()"
+                        >
 
                             <option
                                 value="Open"
@@ -360,13 +366,6 @@ if (!$issue) {
                             </option>
 
                         </select>
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                        >
-                            Save
-                        </button>
 
                     </div>
 
@@ -398,7 +397,10 @@ if (!$issue) {
 
                     <div class="sidebar-row">
 
-                        <select name="value">
+                        <select
+                            name="value"
+                            onchange="this.form.submit()"
+                        >
 
                             <option
                                 value="Low"
@@ -422,13 +424,6 @@ if (!$issue) {
                             </option>
 
                         </select>
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                        >
-                            Save
-                        </button>
 
                     </div>
 
@@ -460,7 +455,9 @@ if (!$issue) {
 
             <div class="meta-item">
 
-                <strong>Created: </strong>
+                <strong>Created:</strong>
+
+                <br>
 
                 <?= htmlspecialchars($issue['created_at'] ?? '') ?>
 
@@ -468,9 +465,11 @@ if (!$issue) {
 
             <div class="meta-item">
 
-                <strong>Last update: </strong>
+                <strong>Last update:</strong>
 
-                <?= htmlspecialchars($issue['updated_at'] ?? '-----') ?>
+                <br>
+
+                <?= htmlspecialchars($issue['updated_at'] ?? 'Never updated') ?>
 
             </div>
 
@@ -503,5 +502,4 @@ if (!$issue) {
 
 </script>
 
-</body>
-</html>
+<?php require '../app/views/partials/footer.php'; ?>

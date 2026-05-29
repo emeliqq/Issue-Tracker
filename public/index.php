@@ -1,79 +1,242 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issue Tracker</title>
+<?php require '../app/views/partials/header.php'; ?>
 
-    <style>
+<?php
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f5f7;
-        }
+require_once '../app/models/IssueRepository.php';
 
-        .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+$repo = new IssueRepository();
 
-        .hero-box {
-            background: white;
-            padding: 50px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+$issues = array_reverse($repo->getAll());
 
-        h1 {
-            margin-top: 0;
-        }
+$recentIssues = array_slice($issues, 0, 4);
 
-        p {
-            color: #666;
-            margin-bottom: 30px;
-        }
+?>
 
-        .btn {
-            display: inline-block;
-            background: #0052cc;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            margin: 5px;
-        }
+<title>Issue Tracker</title>
 
-    </style>
+<link
+    rel="stylesheet"
+    href="assets/css/home.css"
+>
 
 </head>
 <body>
 
+<header class="topbar">
+
+<a
+    href="index.php"
+    class="logo"
+>
+    Issue Tracker
+</a>
+
+<div class="nav-links">
+
+    <a href="index.php">
+        Home
+    </a>
+
+    <a href="issues.php">
+        Issues
+    </a>
+
+</div>
+
+</header>
+
+<div class="hero-layout">
+
 <div class="hero">
 
-    <div class="hero-box">
+    <div class="hero-content">
 
-        <h1>Issue Tracker</h1>
+        <h1>
+            Simple issue tracking system
+        </h1>
 
         <p>
-            A lightweight system for managing software issues.
+            Manage software bugs, QA reports and project issues
+            in one place.
         </p>
 
-        <a
-            href="issues.php"
-            class="btn"
-        >
-            Show Issues
-        </a>
+        <div class="hero-buttons">
+
+            <a
+                href="issues.php"
+                class="primary-btn"
+            >
+                View Issues
+            </a>
+
+        </div>
+
+        <!-- RECENT ISSUES -->
+
+        <div class="recent-section">
+
+            <h3>
+                Recent Issues
+            </h3>
+
+            <?php if (empty($recentIssues)): ?>
+
+                <div class="recent-card">
+
+                    <p>
+                        No recent issues
+                    </p>
+
+                </div>
+
+            <?php else: ?>
+
+                <?php foreach ($recentIssues as $issue): ?>
+
+                    <a
+                        href="issue.php?id=<?= htmlspecialchars($issue['id']) ?>"
+                        class="recent-card-link"
+                    >
+
+                        <div class="recent-card">
+
+                            <div class="recent-header">
+
+                                <strong>
+                                    <?= htmlspecialchars($issue['id']) ?>
+                                </strong>
+
+                            </div>
+
+                            <div class="recent-meta">
+
+                                <?php
+
+                                $status = strtolower($issue['status'] ?? 'open');
+                                $priority = strtolower($issue['priority'] ?? 'low');
+
+                                ?>
+
+                                <span class="status-badge <?= $status ?>">
+                                    <?= htmlspecialchars($issue['status'] ?? 'Open') ?>
+                                </span>
+
+                                <span class="separator">
+                                    •
+                                </span>
+
+                                <span class="severity-badge <?= $priority ?>">
+                                    <?= htmlspecialchars($issue['priority'] ?? 'Low') ?>
+                                </span>
+
+                            </div>
+
+                            <p title="<?= htmlspecialchars($issue['summary']) ?>">
+                                <?= htmlspecialchars(
+                                    strlen($issue['summary']) > 80
+                                        ? substr($issue['summary'], 0, 80) . '...'
+                                        : $issue['summary']
+                                ) ?>
+                            </p>
+
+                        </div>
+
+                    </a>
+
+                <?php endforeach; ?>
+
+            <?php endif; ?>
+
+        </div>
 
     </div>
 
 </div>
 
-</body>
-</html>
+<div class="info-section">
+
+    <div class="info-card">
+
+        <h2>
+            Instruction how to write an issue
+        </h2>
+
+        <div class="example-form">
+            <h3>Summary</h3>
+    
+            <div class="example-group small-box">
+
+                *Short summary of what happened*
+
+            </div>
+            <h3>Description</h3>
+            <div class="example-group large-box">
+
+                *Describe what happened in details as much as it is possible*
+
+                <br><br>
+
+                Expected result:
+
+                <br>
+
+                *Describe what should happen*
+
+                <br><br>
+
+                Note: (or Notes)
+
+                <br>
+
+                *Write additional information that can be useful*
+
+                <br>
+
+                1. First note.
+
+                <br>
+
+                2. Second note.
+
+            </div>
+            <h3>Steps to reproduce</h3>
+            <div class="example-group medium-box">
+
+                *Describe in steps what should you do to make that issue happen again*
+
+                <br><br>
+
+                1. First step
+
+                <br>
+
+                2. Second step
+
+            </div>
+            <h3>Priority</h3>
+            <div class="example-group small-box">
+
+                <select disabled>
+
+                    <option>
+                        Low
+                    </option>
+
+                </select>
+
+                <br><br>
+
+                Remember to select appropriate priority of the issue
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<?php require '../app/views/partials/footer.php'; ?>
