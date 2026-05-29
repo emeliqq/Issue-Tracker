@@ -1,5 +1,14 @@
-<?php require '../app/views/partials/header.php'; ?>
 <?php
+
+session_start();
+
+if (!isset($_SESSION['user'])) {
+
+    header('Location: login.php');
+    exit;
+}
+
+require '../app/views/partials/header.php'; 
 
 require_once '../app/models/IssueRepository.php';
 
@@ -101,32 +110,6 @@ if (!empty($search)) {
 
 </head>
 <body>
-
-
-
-    
-    <header class="topbar">
-
-    <a
-        href="index.php"
-        class="logo"
-    >
-        Issue Tracker
-    </a>
-
-    <div class="nav-links">
-
-        <a href="index.php">
-            Home
-        </a>
-
-        <a href="issues.php">
-            Issues
-        </a>
-
-    </div>
-
-</header>
 
 
 <div class="container">

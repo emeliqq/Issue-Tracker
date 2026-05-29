@@ -1,14 +1,22 @@
-<?php require '../app/views/partials/header.php'; ?>
-
 <?php
 
-require_once '../app/models/IssueRepository.php';
+session_start();
 
-$repo = new IssueRepository();
+if (!isset($_SESSION['user'])) {
 
-$issues = array_reverse($repo->getAll());
+    header('Location: login.php');
+    exit;
+}
 
-$recentIssues = array_slice($issues, 0, 4);
+ require '../app/views/partials/header.php'; 
+
+    require_once '../app/models/IssueRepository.php';
+
+    $repo = new IssueRepository();
+
+    $issues = array_reverse($repo->getAll());
+
+    $recentIssues = array_slice($issues, 0, 4);
 
 ?>
 
@@ -22,28 +30,7 @@ $recentIssues = array_slice($issues, 0, 4);
 </head>
 <body>
 
-<header class="topbar">
 
-<a
-    href="index.php"
-    class="logo"
->
-    Issue Tracker
-</a>
-
-<div class="nav-links">
-
-    <a href="index.php">
-        Home
-    </a>
-
-    <a href="issues.php">
-        Issues
-    </a>
-
-</div>
-
-</header>
 
 <div class="hero-layout">
 
