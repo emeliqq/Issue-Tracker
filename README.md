@@ -5,7 +5,7 @@ A web application for tracking, managing, and organizing software issues.
 
 - Create new issues
 - View a list of all issues
-- Update issue status (Open, In Progress, Closed)
+- Update issue status (Open, In Progress, Resolved)
 - View issue details
 
 ## Technologies
