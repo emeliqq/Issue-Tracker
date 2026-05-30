@@ -16,6 +16,9 @@ $repo = new IssueRepository();
 
 $search = trim($_GET['search'] ?? '');
 $sort = $_GET['sort'] ?? 'newest';
+$statusFilter = $_GET['status'] ?? '';
+$severityFilter = $_GET['severity'] ?? '';
+$assignmentFilter = $_GET['assignment'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -98,6 +101,42 @@ if (!empty($search)) {
     );
 }
 
+if (!empty($statusFilter)) {
+
+    $issues = array_filter(
+        $issues,
+        fn($issue) =>
+            ($issue['status'] ?? '') === $statusFilter
+    );
+}
+
+if (!empty($severityFilter)) {
+
+    $issues = array_filter(
+        $issues,
+        fn($issue) =>
+            ($issue['priority'] ?? '') === $severityFilter
+    );
+}
+
+if ($assignmentFilter === 'assigned') {
+
+    $issues = array_filter(
+        $issues,
+        fn($issue) =>
+            !empty($issue['assignee'])
+    );
+}
+
+if ($assignmentFilter === 'unassigned') {
+
+    $issues = array_filter(
+        $issues,
+        fn($issue) =>
+            empty($issue['assignee'])
+    );
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -134,47 +173,136 @@ if (!empty($search)) {
 
             <form method="GET" class="filters-form">
 
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="Search keywords..."
-                    value="<?= htmlspecialchars($search) ?>"
-                >
+    <input
+        type="text"
+        name="search"
+        placeholder="Search keywords..."
+        value="<?= htmlspecialchars($search) ?>"
+    >
 
-                <select
-                    name="sort"
-                    onchange="this.form.submit()"
-                >
+        <button type="submit">
+        Search
+    </button>
 
-                    <option
-    value="newest"
-    <?= $sort === 'newest' ? 'selected' : '' ?>
->
-    Newest Created
-</option>
+    <select
+        name="status"
+        onchange="this.form.submit()"
+    >
 
-<option
-    value="oldest"
-    <?= $sort === 'oldest' ? 'selected' : '' ?>
->
-    Oldest Created
-</option>
+        <option value="">
+            All Statuses
+        </option>
 
-<option
-    value="updated"
-    <?= $sort === 'updated' ? 'selected' : '' ?>
->
-    Recently Updated
-</option>
+        <option
+            value="Open"
+            <?= $statusFilter === 'Open' ? 'selected' : '' ?>
+        >
+            Open
+        </option>
 
-                </select>
+        <option
+            value="In Progress"
+            <?= $statusFilter === 'In Progress' ? 'selected' : '' ?>
+        >
+            In Progress
+        </option>
 
-                <button type="submit">
-                    Search
-                </button>
+        <option
+            value="Resolved"
+            <?= $statusFilter === 'Resolved' ? 'selected' : '' ?>
+        >
+            Resolved
+        </option>
 
-            </form>
+    </select>
 
+    <select
+        name="severity"
+        onchange="this.form.submit()"
+    >
+
+        <option value="">
+            All Severities
+        </option>
+
+        <option
+            value="Low"
+            <?= $severityFilter === 'Low' ? 'selected' : '' ?>
+        >
+            Low
+        </option>
+
+        <option
+            value="Medium"
+            <?= $severityFilter === 'Medium' ? 'selected' : '' ?>
+        >
+            Medium
+        </option>
+
+        <option
+            value="High"
+            <?= $severityFilter === 'High' ? 'selected' : '' ?>
+        >
+            High
+        </option>
+
+    </select>
+
+    <select
+        name="assignment"
+        onchange="this.form.submit()"
+    >
+
+        <option value="">
+            All Issues
+        </option>
+
+        <option
+            value="assigned"
+            <?= $assignmentFilter === 'assigned' ? 'selected' : '' ?>
+        >
+            Assigned
+        </option>
+
+        <option
+            value="unassigned"
+            <?= $assignmentFilter === 'unassigned' ? 'selected' : '' ?>
+        >
+            Unassigned
+        </option>
+
+    </select>
+
+    <select
+        name="sort"
+        onchange="this.form.submit()"
+    >
+
+        <option
+            value="newest"
+            <?= $sort === 'newest' ? 'selected' : '' ?>
+        >
+            Newest Created
+        </option>
+
+        <option
+            value="oldest"
+            <?= $sort === 'oldest' ? 'selected' : '' ?>
+        >
+            Oldest Created
+        </option>
+
+        <option
+            value="updated"
+            <?= $sort === 'updated' ? 'selected' : '' ?>
+        >
+            Recently Updated
+        </option>
+
+    </select>
+
+
+</form>
         </div>
 <br>
     <?php if (empty($issues)): ?>
