@@ -28,7 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'status' => 'Open',
     'reporter' => $_SESSION['user']['id'],
     'created_at' => date('Y-m-d H:i:s'),
-    'updated_at' => null
+    'updated_at' => null,
+    'assignee' => null,
+    'updater' => null,
 ];
 
     $repo->add($newIssue);

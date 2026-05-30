@@ -8,7 +8,14 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+require_once '../app/models/UserRepository.php';
 require_once '../app/models/IssueRepository.php';
+
+$userRepo = new UserRepository();
+
+$users = $userRepo->getAll();
+
+
 
 $repo = new IssueRepository();
 
@@ -19,32 +26,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $value = $_POST['value'] ?? '';
 
     $allowedFields = [
-        'summary',
-        'description',
-        'steps_to_reproduce',
-        'status',
-        'priority'
-    ];
+    'summary',
+    'description',
+    'steps_to_reproduce',
+    'status',
+    'priority',
+    'assignee'
+];
 
     if (
         $id &&
         in_array($field, $allowedFields)
     ) {
 
-        $repo->updateField($id, $field, $value);
-
-    }
+     $repo->updateField(
+        $id,
+        $field,
+        $value,
+        $_SESSION['user']['id']
+    );
 
     header("Location: issue.php?id=$id");
     exit;
 }
-
+}
 $id = $_GET['id'] ?? '';
 
 $issue = $repo->findById($id);
 
 if (!$issue) {
     die('Issue not found.');
+}
+
+$reporterName = 'Unknown';
+$updaterName = 'Unknown';
+
+foreach ($users as $user) {
+
+    if (
+        ($issue['reporter'] ?? '') === ($user['id'] ?? '')
+    ) {
+
+        $reporterName =
+            ($user['first_name'] ?? '') .
+            ' ' .
+            ($user['last_name'] ?? '');
+    }
+
+    if (
+        ($issue['updater'] ?? '') === ($user['id'] ?? '')
+    ) {
+
+        $updaterName =
+            ($user['first_name'] ?? '') .
+            ' ' .
+            ($user['last_name'] ?? '');
+    }
 }
 
 ?>
@@ -383,6 +420,64 @@ if (!$issue) {
 
             <hr>
 
+            
+
+<div class="sidebar-form">
+
+    <h3>Assignee</h3>
+
+    <form method="POST">
+
+        <input
+            type="hidden"
+            name="id"
+            value="<?= htmlspecialchars($issue['id']) ?>"
+        >
+
+        <input
+            type="hidden"
+            name="field"
+            value="assignee"
+        >
+
+        <div class="sidebar-row">
+
+            <select
+                name="value"
+                onchange="this.form.submit()"
+            >
+
+                <option value="">
+                    Unassigned
+                </option>
+
+                <?php foreach ($users as $user): ?>
+
+                    <option
+                        value="<?= htmlspecialchars($user['id']) ?>"
+                        <?= (($issue['assignee'] ?? '') === ($user['id'] ?? ''))
+                            ? 'selected'
+                            : '' ?>
+                    >
+
+                        <?= htmlspecialchars(
+                            $user['first_name'] .
+                            ' ' .
+                            $user['last_name']
+                        ) ?>
+
+                    </option>
+
+                <?php endforeach; ?>
+
+            </select>
+
+        </div>
+
+    </form>
+
+</div>
+<hr>
             <!-- PRIORITY -->
 
             <div class="sidebar-form">
@@ -448,14 +543,14 @@ if (!$issue) {
             <div class="meta-item">
 
                 <strong>Reporter:</strong>
-                Admin
+                <?= htmlspecialchars($reporterName) ?>
 
             </div>
 
             <div class="meta-item">
 
                 <strong>Updater:</strong>
-                Admin
+                <?= htmlspecialchars($updaterName) ?>
 
             </div>
 

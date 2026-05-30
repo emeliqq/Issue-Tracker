@@ -79,5 +79,31 @@
         "reporter": "USR-00004",
         "created_at": "2026-05-30 10:33:34",
         "updated_at": null
+    },
+    {
+        "id": "QA-00009",
+        "summary": "czscascas",
+        "description": "casca",
+        "steps_to_reproduce": "scascas",
+        "priority": "Low",
+        "status": "In Progress",
+        "reporter": "USR-00004",
+        "created_at": "2026-05-30 11:08:55",
+        "updated_at": "2026-05-30 11:32:06",
+        "assignee": "USR-00004",
+        "updater": "USR-00004"
+    },
+    {
+        "id": "QA-00010",
+        "summary": "sdsd",
+        "description": "fsdf",
+        "steps_to_reproduce": "sdfsdf",
+        "priority": "Medium",
+        "status": "In Progress",
+        "reporter": "USR-00004",
+        "created_at": "2026-05-30 11:13:27",
+        "updated_at": "2026-05-30 11:33:30",
+        "assignee": "USR-00004",
+        "updater": "USR-00003"
     }
 ]

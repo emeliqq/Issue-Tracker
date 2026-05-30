@@ -46,9 +46,10 @@ class IssueRepository
     public function updateField(
         string $id,
         string $field,
-        string $value
-    ): void {
-
+        string $value,
+        string $updaterId
+    ): void
+    {
         $issues = $this->getAll();
 
         foreach ($issues as &$issue) {
@@ -59,9 +60,10 @@ class IssueRepository
 
                 $issue['updated_at'] = date('Y-m-d H:i:s');
 
-                break;
-            }
+                $issue['updater'] = $updaterId;
 
+            break;
+}
         }
 
         file_put_contents(

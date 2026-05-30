@@ -26,6 +26,12 @@ $reportedIssues = array_filter(
         ($issue['reporter'] ?? '') === $currentUserId
 );
 
+$assignedIssues = array_filter(
+    $issues,
+    fn($issue) =>
+        ($issue['assignee'] ?? '') === $currentUserId
+);
+
 ?>
 <head>
     <link
@@ -47,8 +53,8 @@ $reportedIssues = array_filter(
         <div class="dashboard-card">
 
             <h2>
-                Reported By Me
-            </h2>
+    Reported By Me (<?= count($reportedIssues) ?>)
+</h2>
 
             <?php if (empty($reportedIssues)): ?>
 
@@ -83,12 +89,36 @@ $reportedIssues = array_filter(
         <div class="dashboard-card">
 
             <h2>
-                Assigned To Me
-            </h2>
+    Assigned To Me (<?= count($assignedIssues) ?>)
+</h2>
 
-            <p>
-                No issues found.
-            </p>
+            <?php if (empty($assignedIssues)): ?>
+
+    <p>
+        No issues found.
+    </p>
+
+<?php else: ?>
+
+    <?php foreach ($assignedIssues as $issue): ?>
+
+        <div class="dashboard-issue">
+
+            <a
+                href="issue.php?id=<?= htmlspecialchars($issue['id']) ?>"
+            >
+                <?= htmlspecialchars($issue['id']) ?>
+            </a>
+
+            -
+
+            <?= htmlspecialchars($issue['summary']) ?>
+
+        </div>
+
+    <?php endforeach; ?>
+
+<?php endif; ?>
 
         </div>
 
