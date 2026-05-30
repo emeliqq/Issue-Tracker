@@ -9,12 +9,16 @@ class UserRepository
         $this->file = __DIR__ . '/../../data/users.json';
     }
 
+/* LOAD ALL USERS ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
+
     public function getAll(): array
     {
         $data = file_get_contents($this->file);
 
         return json_decode($data, true) ?? [];
     }
+
+ /* ADD NEW USER ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function add(array $user): void
     {
@@ -28,6 +32,8 @@ class UserRepository
         );
     }
 
+/* FIND USER BY EMAIL -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
     public function findByEmail(string $email): ?array
     {
         $users = $this->getAll();
@@ -37,11 +43,11 @@ class UserRepository
             if (($user['email'] ?? '') === $email) {
                 return $user;
             }
-
         }
-
         return null;
     }
+
+/* FIND USER BY ID ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function findById(string $id): ?array
     {
@@ -54,9 +60,10 @@ class UserRepository
             }
 
         }
-
         return null;
     }
+
+/* GENERATE NEXT USER ID ----------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function getNextId(): string
     {

@@ -9,12 +9,16 @@ class IssueRepository
         $this->file = __DIR__ . '/../../data/issues.json';
     }
 
+/* LOAD ALL ISSUES ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
     public function getAll(): array
     {
         $data = file_get_contents($this->file);
 
         return json_decode($data, true) ?? [];
     }
+
+/* ADD NEW ISSUE ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function add(array $issue): void
     {
@@ -28,6 +32,8 @@ class IssueRepository
         );
     }
 
+/* FIND ISSUE BY ID ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
     public function findById(string $id): ?array
     {
         $issues = $this->getAll();
@@ -39,9 +45,10 @@ class IssueRepository
             }
 
         }
-
         return null;
     }
+
+/* UPDATE ISSUE FIELD -------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function updateField(
         string $id,
@@ -63,7 +70,7 @@ class IssueRepository
                 $issue['updater'] = $updaterId;
 
             break;
-}
+            }
         }
 
         file_put_contents(
@@ -72,27 +79,29 @@ class IssueRepository
         );
     }
 
-public function getNextId(): string
-{
-    $issues = $this->getAll();
+/* GENERATE NEXT ISSUE ID ---------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-    if (empty($issues)) {
-        return 'QA-00001';
+    public function getNextId(): string
+    {
+        $issues = $this->getAll();
+
+        if (empty($issues)) {
+            return 'QA-00001';
+        }
+
+        $lastIssue = end($issues);
+
+        $lastId = $lastIssue['id'] ?? 'QA-00000';
+
+        $number = (int) str_replace('QA-', '', $lastId);
+
+        $nextNumber = $number + 1;
+
+        return 'QA-' . str_pad(
+            $nextNumber,
+            5,
+            '0',
+            STR_PAD_LEFT
+        );
     }
-
-    $lastIssue = end($issues);
-
-    $lastId = $lastIssue['id'] ?? 'QA-00000';
-
-    $number = (int) str_replace('QA-', '', $lastId);
-
-    $nextNumber = $number + 1;
-
-    return 'QA-' . str_pad(
-        $nextNumber,
-        5,
-        '0',
-        STR_PAD_LEFT
-    );
-}
 }

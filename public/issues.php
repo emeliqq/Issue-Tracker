@@ -1,5 +1,7 @@
 <?php
 
+/* AUTHENTICATION ----------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -8,17 +10,23 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+/* DEPENDENCIES ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 require '../app/views/partials/header.php'; 
 
 require_once '../app/models/IssueRepository.php';
 
 $repo = new IssueRepository();
 
+/* FILTERS ------------------------------------------------------------------------------------------------------------------------------------------------------------------ */
+
 $search = trim($_GET['search'] ?? '');
 $sort = $_GET['sort'] ?? 'newest';
 $statusFilter = $_GET['status'] ?? '';
 $severityFilter = $_GET['severity'] ?? '';
 $assignmentFilter = $_GET['assignment'] ?? '';
+
+/* CREATE ISSUE ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -41,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: issues.php');
     exit;
 }
+
+/* LOAD ISSUES ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 $issues = $repo->getAll();
 
@@ -78,6 +88,8 @@ switch ($sort) {
 
         break;
 }
+
+/* FILTERING --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 if (!empty($search)) {
 
@@ -149,12 +161,15 @@ if ($assignmentFilter === 'unassigned') {
         rel="stylesheet"
         href="assets/css/issues.css"
     >
-
+    
 </head>
 <body>
 
+<!-- PAGE CONTENT ------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <div class="container">
+
+<!-- PAGE HEADER ------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
     <div class="top-bar">
 
@@ -169,142 +184,159 @@ if ($assignmentFilter === 'unassigned') {
 
     </div>
 
+<!-- FILTER TOOLBAR ---------------------------------------------------------------------------------------------------------------------------------------------------------->
+
     <div class="toolbar">
 
-            <form method="GET" class="filters-form">
+        <form method="GET" class="filters-form">
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Search keywords..."
-        value="<?= htmlspecialchars($search) ?>"
-    >
+<!-- KEYWORDS REARCH --------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <button type="submit">
-        Search
-    </button>
+            <input
+                type="text"
+                name="search"
+                placeholder="Search keywords..."
+                value="<?= htmlspecialchars($search) ?>"
+            >
 
-    <select
-        name="status"
-        onchange="this.form.submit()"
-    >
+<!-- BUTTON SEARCH ----------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <option value="">
-            All Statuses
-        </option>
+            <button type="submit">
+                Search
+            </button>
 
-        <option
-            value="Open"
-            <?= $statusFilter === 'Open' ? 'selected' : '' ?>
-        >
-            Open
-        </option>
+<!-- FILTER STATUS ----------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <option
-            value="In Progress"
-            <?= $statusFilter === 'In Progress' ? 'selected' : '' ?>
-        >
-            In Progress
-        </option>
+            <select
+                name="status"
+                onchange="this.form.submit()"
+            >
+                <option value="">
+                    All Statuses
+                </option>
 
-        <option
-            value="Resolved"
-            <?= $statusFilter === 'Resolved' ? 'selected' : '' ?>
-        >
-            Resolved
-        </option>
+                <option
+                    value="Open"
+                    <?= $statusFilter === 'Open' ? 'selected' : '' ?>
+                >
+                    Open
+                </option>
 
-    </select>
+                <option
+                    value="In Progress"
+                    <?= $statusFilter === 'In Progress' ? 'selected' : '' ?>
+                >
+                    In Progress
+                </option>
 
-    <select
-        name="severity"
-        onchange="this.form.submit()"
-    >
+                <option
+                    value="Resolved"
+                    <?= $statusFilter === 'Resolved' ? 'selected' : '' ?>
+                >
+                    Resolved
+                </option>
 
-        <option value="">
-            All Severities
-        </option>
+            </select>
 
-        <option
-            value="Low"
-            <?= $severityFilter === 'Low' ? 'selected' : '' ?>
-        >
-            Low
-        </option>
+<!-- FILTER SEVERITY --------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <option
-            value="Medium"
-            <?= $severityFilter === 'Medium' ? 'selected' : '' ?>
-        >
-            Medium
-        </option>
+            <select
+                name="severity"
+                onchange="this.form.submit()"
+            >
 
-        <option
-            value="High"
-            <?= $severityFilter === 'High' ? 'selected' : '' ?>
-        >
-            High
-        </option>
+                <option value="">
+                    All Severities
+                </option>
 
-    </select>
+                <option
+                    value="Low"
+                    <?= $severityFilter === 'Low' ? 'selected' : '' ?>
+                >
+                    Low
+                </option>
 
-    <select
-        name="assignment"
-        onchange="this.form.submit()"
-    >
+                <option
+                    value="Medium"
+                    <?= $severityFilter === 'Medium' ? 'selected' : '' ?>
+                >
+                    Medium
+                </option>
 
-        <option value="">
-            All Issues
-        </option>
+                <option
+                    value="High"
+                    <?= $severityFilter === 'High' ? 'selected' : '' ?>
+                >
+                    High
+                </option>
 
-        <option
-            value="assigned"
-            <?= $assignmentFilter === 'assigned' ? 'selected' : '' ?>
-        >
-            Assigned
-        </option>
+            </select>
 
-        <option
-            value="unassigned"
-            <?= $assignmentFilter === 'unassigned' ? 'selected' : '' ?>
-        >
-            Unassigned
-        </option>
+<!-- FILTER ASSIGNMENT ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-    </select>
+            <select
+                name="assignment"
+                onchange="this.form.submit()"
+            >
 
-    <select
-        name="sort"
-        onchange="this.form.submit()"
-    >
+                <option value="">
+                    All Issues
+                </option>
 
-        <option
-            value="newest"
-            <?= $sort === 'newest' ? 'selected' : '' ?>
-        >
-            Newest Created
-        </option>
+                <option
+                    value="assigned"
+                    <?= $assignmentFilter === 'assigned' ? 'selected' : '' ?>
+                >
+                    Assigned
+                </option>
 
-        <option
-            value="oldest"
-            <?= $sort === 'oldest' ? 'selected' : '' ?>
-        >
-            Oldest Created
-        </option>
+                <option
+                    value="unassigned"
+                    <?= $assignmentFilter === 'unassigned' ? 'selected' : '' ?>
+                >
+                    Unassigned
+                </option>
 
-        <option
-            value="updated"
-            <?= $sort === 'updated' ? 'selected' : '' ?>
-        >
-            Recently Updated
-        </option>
+            </select>
 
-    </select>
+<!-- FILTER DATES ------------------------------------------------------------------------------------------------------------------------------------------------------------>
 
+            <select
+                name="sort"
+                onchange="this.form.submit()"
+            >
 
-</form>
-        </div>
+                <option
+                    value="newest"
+                    <?= $sort === 'newest' ? 'selected' : '' ?>
+                >
+                    Newest Created
+                </option>
+
+                <option
+                    value="oldest"
+                    <?= $sort === 'oldest' ? 'selected' : '' ?>
+                >
+                    Oldest Created
+                </option>
+
+                <option
+                    value="updated"
+                    <?= $sort === 'updated' ? 'selected' : '' ?>
+                >
+                    Recently Updated
+                </option>
+
+            </select>
+
+        </form>
+
+    </div>
+
 <br>
+
+<!-- ISSUE LIST ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
     <?php if (empty($issues)): ?>
 
         <p>No issues found.</p>
@@ -365,7 +397,7 @@ if ($assignmentFilter === 'unassigned') {
 
 </div>
 
-<!-- MODAL -->
+<!-- CREATE ISSUE MODAL ------------------------------------------------------------------------------------------------------------------------------------------------------->
 
 <div id="issueModal" class="modal">
 
@@ -439,6 +471,8 @@ if ($assignmentFilter === 'unassigned') {
 
 </div>
 
+<!-- MODAL SCRIPT ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
 <script>
 
     const modal = document.getElementById('issueModal');
@@ -456,7 +490,7 @@ if ($assignmentFilter === 'unassigned') {
         if (event.target === modal) {
             closeModal();
         }
-
+        
     }
 
 </script>

@@ -1,5 +1,7 @@
 <?php
 
+/* AUTHENTICATION ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
+
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -8,22 +10,30 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+/* DEPENDENCIES -------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 require_once '../app/models/UserRepository.php';
 require_once '../app/models/IssueRepository.php';
+
+/* LOAD USERS ----------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 $userRepo = new UserRepository();
 
 $users = $userRepo->getAll();
 
-
+/* LOAD ISSUE REPOSITORY ----------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 $repo = new IssueRepository();
+
+/* UPDATE ISSUE ---------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id = $_POST['id'] ?? '';
     $field = $_POST['field'] ?? '';
     $value = $_POST['value'] ?? '';
+
+/* EDITABLE FIELDS ----------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     $allowedFields = [
     'summary',
@@ -50,6 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 }
+
+/* LOAD ISSUE ---------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 $id = $_GET['id'] ?? '';
 
 $issue = $repo->findById($id);
@@ -57,6 +70,8 @@ $issue = $repo->findById($id);
 if (!$issue) {
     die('Issue not found.');
 }
+
+/* RESOLVE REPORTER AND UPDATER NAMES ---------------------------------------------------------------------------------------------------------------------------------------- */
 
 $reporterName = 'Unknown';
 $updaterName = 'Unknown';
@@ -103,266 +118,269 @@ foreach ($users as $user) {
 </head>
 <body>
 
-<header class="topbar">
+<!-- PAGE HEADER ------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-    <a
-        href="issues.php"
-        class="back-link"
-    >
-        ← Back to Issues
-    </a>
+    <header class="topbar">
 
-</header>
+        <a
+            href="issues.php"
+            class="back-link"
+        >
+            ← Back to Issues
+        </a>
 
+    </header>
 
-<div class="page-container">
+<!-- PAGE CONTENT ----------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-    <!-- LEFT -->
+    <div class="page-container">
 
-    <div class="content-column">
+<!-- LEFT ------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-        <div class="issue-id">
-            <?= htmlspecialchars($issue['id'] ?? '') ?>
-        </div>
+        <div class="content-column">
 
-        <!-- SUMMARY -->
+            <div class="issue-id">
+                <?= htmlspecialchars($issue['id'] ?? '') ?>
+            </div>
 
-        <div class="summary-section">
+<!-- SUMMARY --------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-            <div id="summary-view">
+            <div class="summary-section">
 
-                <div class="summary-row">
+                <div id="summary-view">
 
-                    <h1 class="summary-title">
-                        <?= htmlspecialchars($issue['summary'] ?? '') ?>
-                    </h1>
+                    <div class="summary-row">
+
+                        <h1 class="summary-title">
+                            <?= htmlspecialchars($issue['summary'] ?? '') ?>
+                        </h1>
+
+                        <button
+                            class="edit-btn"
+                            onclick="toggleSection('summary', true)"
+                        >
+                            Edit
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="summary-edit"
+                    style="display:none;"
+                >
+
+                    <form method="POST">
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= htmlspecialchars($issue['id']) ?>"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="field"
+                            value="summary"
+                        >
+
+                        <input
+                            type="text"
+                            name="value"
+                            value="<?= htmlspecialchars($issue['summary']) ?>"
+                        >
+
+                        <div class="button-group">
+
+                            <button
+                                type="submit"
+                                class="save-btn"
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                type="button"
+                                class="cancel-btn"
+                                onclick="toggleSection('summary', false)"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+<!-- DESCRIPTION ------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+            <div class="content-box">
+
+                <div class="section-header">
+
+                    <h2>Description</h2>
 
                     <button
                         class="edit-btn"
-                        onclick="toggleSection('summary', true)"
+                        onclick="toggleSection('description', true)"
                     >
                         Edit
                     </button>
 
                 </div>
 
-            </div>
+                <div id="description-view">
 
-            <div
-                id="summary-edit"
-                style="display:none;"
-            >
-
-                <form method="POST">
-
-                    <input
-                        type="hidden"
-                        name="id"
-                        value="<?= htmlspecialchars($issue['id']) ?>"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="field"
-                        value="summary"
-                    >
-
-                    <input
-                        type="text"
-                        name="value"
-                        value="<?= htmlspecialchars($issue['summary']) ?>"
-                    >
-
-                    <div class="button-group">
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                        >
-                            Save
-                        </button>
-
-                        <button
-                            type="button"
-                            class="cancel-btn"
-                            onclick="toggleSection('summary', false)"
-                        >
-                            Cancel
-                        </button>
-
+                    <div class="content-text">
+                        <?= nl2br(
+                            htmlspecialchars(
+                                trim($issue['description'] ?? '')
+                            )
+                        ) ?>
                     </div>
 
-                </form>
+                </div>
 
-            </div>
-
-        </div>
-
-        <!-- DESCRIPTION -->
-
-        <div class="content-box">
-
-            <div class="section-header">
-
-                <h2>Description</h2>
-
-                <button
-                    class="edit-btn"
-                    onclick="toggleSection('description', true)"
+                <div
+                    id="description-edit"
+                    style="display:none;"
                 >
-                    Edit
-                </button>
 
-            </div>
+                    <form method="POST">
 
-            <div id="description-view">
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= htmlspecialchars($issue['id']) ?>"
+                        >
 
-                <div class="content-text">
-                    <?= nl2br(
-                        htmlspecialchars(
-                            trim($issue['description'] ?? '')
-                        )
-                    ) ?>
+                        <input
+                            type="hidden"
+                            name="field"
+                            value="description"
+                        >
+
+                        <textarea
+                            name="value"
+                        ><?= htmlspecialchars($issue['description']) ?></textarea>
+
+                        <div class="button-group">
+
+                            <button
+                                type="submit"
+                                class="save-btn"
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                type="button"
+                                class="cancel-btn"
+                                onclick="toggleSection('description', false)"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
                 </div>
 
             </div>
 
-            <div
-                id="description-edit"
-                style="display:none;"
-            >
+<!-- STEPS ----------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-                <form method="POST">
+            <div class="content-box">
 
-                    <input
-                        type="hidden"
-                        name="id"
-                        value="<?= htmlspecialchars($issue['id']) ?>"
+                <div class="section-header">
+
+                    <h2>Steps to reproduce</h2>
+
+                    <button
+                        class="edit-btn"
+                        onclick="toggleSection('steps', true)"
                     >
+                        Edit
+                    </button>
 
-                    <input
-                        type="hidden"
-                        name="field"
-                        value="description"
-                    >
+                </div>
 
-                    <textarea
-                        name="value"
-                    ><?= htmlspecialchars($issue['description']) ?></textarea>
+                <div id="steps-view">
 
-                    <div class="button-group">
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                        >
-                            Save
-                        </button>
-
-                        <button
-                            type="button"
-                            class="cancel-btn"
-                            onclick="toggleSection('description', false)"
-                        >
-                            Cancel
-                        </button>
-
+                    <div class="content-text">
+                        <?= nl2br(
+                            htmlspecialchars(
+                                trim($issue['steps_to_reproduce'] ?? '')
+                            )
+                        ) ?>
                     </div>
 
-                </form>
+                </div>
 
-            </div>
-
-        </div>
-
-        <!-- STEPS -->
-
-        <div class="content-box">
-
-            <div class="section-header">
-
-                <h2>Steps to reproduce</h2>
-
-                <button
-                    class="edit-btn"
-                    onclick="toggleSection('steps', true)"
+                <div
+                    id="steps-edit"
+                    style="display:none;"
                 >
-                    Edit
-                </button>
 
-            </div>
+                    <form method="POST">
 
-            <div id="steps-view">
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= htmlspecialchars($issue['id']) ?>"
+                        >
 
-                <div class="content-text">
-                    <?= nl2br(
-                        htmlspecialchars(
-                            trim($issue['steps_to_reproduce'] ?? '')
-                        )
-                    ) ?>
+                        <input
+                            type="hidden"
+                            name="field"
+                            value="steps_to_reproduce"
+                        >
+
+                        <textarea
+                            name="value"
+                        ><?= htmlspecialchars($issue['steps_to_reproduce']) ?></textarea>
+
+                        <div class="button-group">
+
+                            <button
+                                type="submit"
+                                class="save-btn"
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                type="button"
+                                class="cancel-btn"
+                                onclick="toggleSection('steps', false)"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
                 </div>
 
             </div>
 
-            <div
-                id="steps-edit"
-                style="display:none;"
-            >
-
-                <form method="POST">
-
-                    <input
-                        type="hidden"
-                        name="id"
-                        value="<?= htmlspecialchars($issue['id']) ?>"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="field"
-                        value="steps_to_reproduce"
-                    >
-
-                    <textarea
-                        name="value"
-                    ><?= htmlspecialchars($issue['steps_to_reproduce']) ?></textarea>
-
-                    <div class="button-group">
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                        >
-                            Save
-                        </button>
-
-                        <button
-                            type="button"
-                            class="cancel-btn"
-                            onclick="toggleSection('steps', false)"
-                        >
-                            Cancel
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
         </div>
 
-    </div>
-
-    <!-- RIGHT -->
+<!-- ISSUE METADATA ---------------------------------------------------------------------------------------------------------------------------------------------------------> 
 
     <div class="sidebar-column">
 
-        <!-- STATUS + SEVERITY -->
+<!-- STATUS + SEVERITY ------------------------------------------------------------------------------------------------------------------------------------------------------>
 
         <div class="sidebar-box">
 
-            <!-- STATUS -->
+<!-- STATUS ----------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
             <div class="sidebar-form">
 
@@ -420,7 +438,7 @@ foreach ($users as $user) {
 
             <hr>
 
-            
+<!-- ASSIGNEE ------------------------------------------------------------------------------------------------------------------------------------------------------------->        
 
 <div class="sidebar-form">
 
@@ -478,7 +496,8 @@ foreach ($users as $user) {
 
 </div>
 <hr>
-            <!-- PRIORITY -->
+
+<!-- PRIORITY ------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
             <div class="sidebar-form">
 
@@ -536,7 +555,7 @@ foreach ($users as $user) {
 
         </div>
 
-        <!-- PEOPLE + DATES -->
+<!-- PEOPLE + DATES ---------------------------------------------------------------------------------------------------------------------------------------------------------->
 
         <div class="sidebar-box">
 
@@ -581,6 +600,8 @@ foreach ($users as $user) {
     </div>
 
 </div>
+
+<!-- EDIT TOGGLE SCRIPT ------------------------------------------------------------------------------------------------------------------------------------------------------>
 
 <script>
 

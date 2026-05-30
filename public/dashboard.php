@@ -89,14 +89,14 @@ $assignedIssues = array_filter(
         <div class="dashboard-card">
 
             <h2>
-    Assigned To Me (<?= count($assignedIssues) ?>)
-</h2>
+                Assigned To Me (<?= count($assignedIssues) ?>)
+            </h2>
 
             <?php if (empty($assignedIssues)): ?>
 
-    <p>
-        No issues found.
-    </p>
+            <p>
+                No issues found.
+            </p>
 
 <?php else: ?>
 
