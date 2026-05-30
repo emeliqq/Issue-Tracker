@@ -39,10 +39,23 @@ $userName = $_SESSION['user']['first_name'] ?? '';
 
         <div class="user-menu">
 
+    <div class="user-trigger">
             👤 <?= htmlspecialchars($userName) ?>
+        </div>
+
+        <div class="user-dropdown">
+
+            <a href="dashboard.php">
+                Dashboard
+            </a>
+
+            <a href="logout.php">
+                Logout
+            </a>
 
         </div>
 
     </div>
+
 
 </header>

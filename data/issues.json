@@ -68,5 +68,16 @@
         "status": "In Progress",
         "created_at": "2026-05-29 22:55:58",
         "updated_at": "2026-05-29 22:56:17"
+    },
+    {
+        "id": "QA-00008",
+        "summary": "sdf",
+        "description": "sdfs",
+        "steps_to_reproduce": "dfsdf",
+        "priority": "Medium",
+        "status": "Open",
+        "reporter": "USR-00004",
+        "created_at": "2026-05-30 10:33:34",
+        "updated_at": null
     }
 ]

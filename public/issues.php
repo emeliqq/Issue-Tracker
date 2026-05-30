@@ -20,15 +20,16 @@ $sort = $_GET['sort'] ?? 'newest';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $newIssue = [
-        'id' => $repo->getNextId(),
-        'summary' => $_POST['summary'] ?? '',
-        'description' => $_POST['description'] ?? '',
-        'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
-        'priority' => $_POST['priority'] ?? 'Low',
-        'status' => 'Open',
-        'created_at' => date('Y-m-d H:i:s'),
-        'updated_at' => null
-    ];
+    'id' => $repo->getNextId(),
+    'summary' => $_POST['summary'] ?? '',
+    'description' => $_POST['description'] ?? '',
+    'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
+    'priority' => $_POST['priority'] ?? 'Low',
+    'status' => 'Open',
+    'reporter' => $_SESSION['user']['id'],
+    'created_at' => date('Y-m-d H:i:s'),
+    'updated_at' => null
+];
 
     $repo->add($newIssue);
 

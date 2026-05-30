@@ -19,5 +19,12 @@
         "last_name": "lol",
         "email": "ola@lol.pl",
         "password": "$2y$10$GH0mrdCC5FQGI3qUSZY6Mud75AVorQCq057MotNPyqQiAmFNJhwBW"
+    },
+    {
+        "id": "USR-00004",
+        "first_name": "Emilia",
+        "last_name": "Jasi\u0144ska",
+        "email": "emilia@jasia.pl",
+        "password": "$2y$10$G1HH77Hw322P61WPNEF6i.AGgqbLeVo2cyGgJ\/QMbGteQ5W0kHswG"
     }
 ]
