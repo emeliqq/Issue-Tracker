@@ -1,30 +1,53 @@
-# Issue-Tracker
-A web application for tracking, managing, and organizing software issues.
+# Issue Tracker
 
-## Features
+## Requirements
 
-- Create new issues
-- View a list of all issues
-- Update issue status (Open, In Progress, Resolved)
-- View issue details
+Before running the application, install:
 
-## Technologies
+* XAMPP
+* PHP 8.x
+* Apache
+* MySQL
 
-- PHP (backend logic)
-- HTML, CSS (UI)
-- JavaScript (interactions)
-- JSON (initial data storage)
-- MySQL (cloud version)
+## Setup
 
-## Project Structure
+### 1. Clone repository
 
-The application is designed with a modular structure, allowing easy transition from file-based storage (JSON) to a relational database (MySQL).
+```bash
+git clone <repository-url>
+```
 
-## Modes
+### 2. Place project in XAMPP
 
-- **Local (Web course):** JSON file storage
-- **Cloud version:** MySQL database + Docker + Azure
+Copy the project to:
 
-## Goal
+```text
+xampp/htdocs/
+```
 
-The goal of this project is to build a scalable and extendable issue tracking system while learning web development and cloud deployment concepts.
+Example:
+
+```text
+xampp/htdocs/issue-tracker
+```
+
+### 3. Start XAMPP services
+
+Open XAMPP Control Panel and start:
+
+* Apache
+* MySQL
+
+### 4. Open application
+
+Navigate to:
+
+```text
+http://localhost/issue-tracker/public
+```
+
+## Notes
+
+This branch contains the web application version of the project.
+
+Additional development, database migration, Docker deployment and cloud-related features are available in other branches.
