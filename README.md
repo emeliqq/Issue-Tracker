@@ -1,30 +1,56 @@
-# Issue-Tracker
-A web application for tracking, managing, and organizing software issues.
+# Issue Tracker (MySQL Version)
 
-## Features
+## Database Setup
 
-- Create new issues
-- View a list of all issues
-- Update issue status (Open, In Progress, Resolved)
-- View issue details
+1. Create a new database:
 
-## Technologies
+```sql
+CREATE DATABASE issue_tracker;
+```
 
-- PHP (backend logic)
-- HTML, CSS (UI)
-- JavaScript (interactions)
-- JSON (initial data storage)
-- MySQL (cloud version)
+2. Import the schema file:
 
-## Project Structure
+```text
+database/issue_tracker.sql
+```
 
-The application is designed with a modular structure, allowing easy transition from file-based storage (JSON) to a relational database (MySQL).
+using phpMyAdmin or MySQL CLI.
 
-## Modes
+## Database Configuration
 
-- **Local (Web course):** JSON file storage
-- **Cloud version:** MySQL database + Docker + Azure
+Verify connection settings in:
 
-## Goal
+```text
+config/Database.php
+```
 
-The goal of this project is to build a scalable and extendable issue tracking system while learning web development and cloud deployment concepts.
+Default configuration:
+
+```php
+mysql:host=localhost;dbname=issue_tracker;charset=utf8
+username: root
+password:
+```
+
+## Running the Application
+
+1. Place the project inside:
+
+```text
+xampp/htdocs/
+```
+
+2. Start:
+
+* Apache
+* MySQL
+
+3. Open:
+
+```text
+http://localhost/issue-tracker/public
+```
+
+## Notes
+
+This branch contains the MySQL-based version of the application and is used for further cloud deployment development.
