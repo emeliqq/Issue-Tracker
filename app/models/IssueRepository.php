@@ -1,54 +1,95 @@
 <?php
 
+require_once __DIR__ . '/../../config/Database.php';
+
 class IssueRepository
 {
-    private string $file;
+    private PDO $connection;
 
     public function __construct()
     {
-        $this->file = __DIR__ . '/../../data/issues.json';
+        $this->connection = Database::getConnection();
     }
 
 /* LOAD ALL ISSUES ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function getAll(): array
     {
-        $data = file_get_contents($this->file);
+        $stmt = $this->connection->query(
+            "SELECT * FROM issues"
+        );
 
-        return json_decode($data, true) ?? [];
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 /* ADD NEW ISSUE ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function add(array $issue): void
     {
-        $issues = $this->getAll();
+            $statusMap = [
+                'Open' => 1,
+                'In Progress' => 2,
+                'Resolved' => 3
+            ];
 
-        $issues[] = $issue;
+            $severityMap = [
+                'Low' => 1,
+                'Medium' => 2,
+                'High' => 3
+            ];
 
-        file_put_contents(
-            $this->file,
-            json_encode($issues, JSON_PRETTY_PRINT)
-        );
-    }
+            $stmt = $this->connection->prepare(
+                "INSERT INTO issues (
+                    id,
+                    summary,
+                    description,
+                    steps_to_reproduce,
+                    status_id,
+                    severity_id,
+                    reporter_id,
+                    assignee_id,
+                    updater_id,
+                    created_at,
+                    updated_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
 
-/* FIND ISSUE BY ID ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            $stmt->execute([
+                $issue['id'],
+                $issue['summary'],
+                $issue['description'],
+                $issue['steps_to_reproduce'],
 
-    public function findById(string $id): ?array
-    {
-        $issues = $this->getAll();
+                $statusMap[$issue['status']],
+                $severityMap[$issue['priority']],
 
-        foreach ($issues as $issue) {
+                $issue['reporter'],
+                $issue['assignee'],
+                $issue['updater'],
 
-            if (($issue['id'] ?? '') === $id) {
-                return $issue;
-            }
-
+                $issue['created_at'],
+                $issue['updated_at']
+            ]);
         }
-        return null;
-    }
 
-/* UPDATE ISSUE FIELD -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* FIND ISSUE BY ID ---------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+        public function findById(string $id): ?array
+        {
+            $stmt = $this->connection->prepare(
+                "SELECT * FROM issues
+                WHERE id = ?"
+            );
+
+            $stmt->execute([$id]);
+
+            $issue = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $issue ?: null;
+        }
+
+    /* UPDATE ISSUE FIELD -------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function updateField(
         string $id,
@@ -57,26 +98,62 @@ class IssueRepository
         string $updaterId
     ): void
     {
-        $issues = $this->getAll();
+        $fieldMap = [
+            'summary' => 'summary',
+            'description' => 'description',
+            'steps_to_reproduce' => 'steps_to_reproduce',
 
-        foreach ($issues as &$issue) {
+            'status' => 'status_id',
+            'priority' => 'severity_id',
+            'assignee' => 'assignee_id'
+        ];
 
-            if (($issue['id'] ?? '') === $id) {
-
-                $issue[$field] = $value;
-
-                $issue['updated_at'] = date('Y-m-d H:i:s');
-
-                $issue['updater'] = $updaterId;
-
-            break;
-            }
+        if (!isset($fieldMap[$field])) {
+            return;
         }
 
-        file_put_contents(
-            $this->file,
-            json_encode($issues, JSON_PRETTY_PRINT)
+        $statusMap = [
+            'Open' => 1,
+            'In Progress' => 2,
+            'Resolved' => 3
+        ];
+
+        $severityMap = [
+            'Low' => 1,
+            'Medium' => 2,
+            'High' => 3
+        ];
+
+        if ($field === 'status') {
+            $value = $statusMap[$value] ?? 1;
+        }
+
+        if ($field === 'priority') {
+            $value = $severityMap[$value] ?? 1;
+        }
+
+        if (
+            $field === 'assignee'
+            && $value === ''
+        ) {
+            $value = null;
+        }
+
+        $databaseField = $fieldMap[$field];
+
+        $stmt = $this->connection->prepare(
+            "UPDATE issues
+            SET {$databaseField} = ?,
+                updater_id = ?,
+                updated_at = NOW()
+            WHERE id = ?"
         );
+
+        $stmt->execute([
+            $value,
+            $updaterId,
+            $id
+        ]);
     }
 
 /* GENERATE NEXT ISSUE ID ---------------------------------------------------------------------------------------------------------------------------------------------------- */

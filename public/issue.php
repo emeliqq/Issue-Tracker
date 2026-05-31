@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $field = $_POST['field'] ?? '';
     $value = $_POST['value'] ?? '';
 
+
 /* EDITABLE FIELDS ----------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     $allowedFields = [
@@ -79,7 +80,7 @@ $updaterName = 'Unknown';
 foreach ($users as $user) {
 
     if (
-        ($issue['reporter'] ?? '') === ($user['id'] ?? '')
+        ($issue['reporter_id'] ?? '') === ($user['id'] ?? '')
     ) {
 
         $reporterName =
@@ -89,7 +90,7 @@ foreach ($users as $user) {
     }
 
     if (
-        ($issue['updater'] ?? '') === ($user['id'] ?? '')
+        ($issue['updater_id'] ?? '') === ($user['id'] ?? '')
     ) {
 
         $updaterName =
@@ -409,21 +410,21 @@ foreach ($users as $user) {
 
                             <option
                                 value="Open"
-                                <?= (($issue['status'] ?? '') === 'Open') ? 'selected' : '' ?>
+                                <?= (($issue['status_id'] ?? '') == 1) ? 'selected' : '' ?>
                             >
                                 Open
                             </option>
 
                             <option
                                 value="In Progress"
-                                <?= (($issue['status'] ?? '') === 'In Progress') ? 'selected' : '' ?>
+                                <?= (($issue['status_id'] ?? '') == 2) ? 'selected' : '' ?>
                             >
                                 In Progress
                             </option>
 
                             <option
                                 value="Resolved"
-                                <?= (($issue['status'] ?? '') === 'Resolved') ? 'selected' : '' ?>
+                                <?= (($issue['status_id'] ?? '') == 3) ? 'selected' : '' ?>
                             >
                                 Resolved
                             </option>
@@ -473,7 +474,7 @@ foreach ($users as $user) {
 
                     <option
                         value="<?= htmlspecialchars($user['id']) ?>"
-                        <?= (($issue['assignee'] ?? '') === ($user['id'] ?? ''))
+                        <?= (($issue['assignee_id'] ?? '') === ($user['id'] ?? ''))
                             ? 'selected'
                             : '' ?>
                     >

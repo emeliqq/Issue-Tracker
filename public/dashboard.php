@@ -23,13 +23,13 @@ $currentUserId = $_SESSION['user']['id'];
 $reportedIssues = array_filter(
     $issues,
     fn($issue) =>
-        ($issue['reporter'] ?? '') === $currentUserId
+        ($issue['reporter_id'] ?? '') === $currentUserId
 );
 
 $assignedIssues = array_filter(
     $issues,
     fn($issue) =>
-        ($issue['assignee'] ?? '') === $currentUserId
+        ($issue['assignee_id'] ?? '') === $currentUserId
 );
 
 ?>

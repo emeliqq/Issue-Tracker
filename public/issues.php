@@ -54,6 +54,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $issues = $repo->getAll();
 
+$statusMap = [
+    1 => 'Open',
+    2 => 'In Progress',
+    3 => 'Resolved'
+];
+
+$severityMap = [
+    1 => 'Low',
+    2 => 'Medium',
+    3 => 'High'
+];
+
 switch ($sort) {
 
     case 'oldest':
@@ -117,8 +129,16 @@ if (!empty($statusFilter)) {
 
     $issues = array_filter(
         $issues,
-        fn($issue) =>
-            ($issue['status'] ?? '') === $statusFilter
+        function ($issue) use (
+            $statusFilter,
+            $statusMap
+        ) {
+
+            return (
+                $statusMap[$issue['status_id']]
+                ?? ''
+            ) === $statusFilter;
+        }
     );
 }
 
@@ -126,8 +146,16 @@ if (!empty($severityFilter)) {
 
     $issues = array_filter(
         $issues,
-        fn($issue) =>
-            ($issue['priority'] ?? '') === $severityFilter
+        function ($issue) use (
+            $severityFilter,
+            $severityMap
+        ) {
+
+            return (
+                $severityMap[$issue['severity_id']]
+                ?? ''
+            ) === $severityFilter;
+        }
     );
 }
 
@@ -136,7 +164,7 @@ if ($assignmentFilter === 'assigned') {
     $issues = array_filter(
         $issues,
         fn($issue) =>
-            !empty($issue['assignee'])
+            !empty($issue['assignee_id'])
     );
 }
 
@@ -145,7 +173,7 @@ if ($assignmentFilter === 'unassigned') {
     $issues = array_filter(
         $issues,
         fn($issue) =>
-            empty($issue['assignee'])
+            empty($issue['assignee_id'])
     );
 }
 
@@ -354,16 +382,26 @@ if ($assignmentFilter === 'unassigned') {
                 <div class="issue-meta">
 
                     Status:
-                    <span class="status-<?= strtolower(str_replace(' ', '-', $issue['status'])) ?>">
-                        <?= htmlspecialchars($issue['status']) ?>
+                    <span class="status-<?= strtolower(str_replace(
+                        ' ',
+                        '-',
+                        $statusMap[$issue['status_id']] ?? 'unknown'
+                    )) ?>">
+                        <?= htmlspecialchars(
+                            $statusMap[$issue['status_id']] ?? 'Unknown'
+                        ) ?>
                     </span>
 
                     <span class="separator">
-                                    •
+                        •
                     </span>
 
-                    <span class="priority-<?= strtolower($issue['priority']) ?>">
-                        <?= htmlspecialchars($issue['priority']) ?>
+                    <span class="priority-<?= strtolower(
+                        $severityMap[$issue['severity_id']] ?? 'unknown'
+                    ) ?>">
+                        <?= htmlspecialchars(
+                            $severityMap[$issue['severity_id']] ?? 'Unknown'
+                        ) ?>
                     </span>
 
                     <br><br>
