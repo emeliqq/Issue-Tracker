@@ -1,66 +1,83 @@
 <?php
 
+require_once __DIR__ . '/../../config/Database.php';
+
 class UserRepository
 {
-    private string $file;
+    private PDO $connection;
 
     public function __construct()
     {
-        $this->file = __DIR__ . '/../../data/users.json';
+        $this->connection = Database::getConnection();
     }
 
 /* LOAD ALL USERS ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
 
     public function getAll(): array
     {
-        $data = file_get_contents($this->file);
+        $stmt = $this->connection->query(
+            "SELECT * FROM users"
+        );
 
-        return json_decode($data, true) ?? [];
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
  /* ADD NEW USER ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function add(array $user): void
     {
-        $users = $this->getAll();
-
-        $users[] = $user;
-
-        file_put_contents(
-            $this->file,
-            json_encode($users, JSON_PRETTY_PRINT)
+        $stmt = $this->connection->prepare(
+            "INSERT INTO users (
+                id,
+                first_name,
+                last_name,
+                email,
+                password,
+                created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?)"
         );
+
+        $stmt->execute([
+            $user['id'],
+            $user['first_name'],
+            $user['last_name'],
+            $user['email'],
+            $user['password'],
+            $user['created_at']
+        ]);
     }
 
 /* FIND USER BY EMAIL -------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function findByEmail(string $email): ?array
     {
-        $users = $this->getAll();
+        $stmt = $this->connection->prepare(
+            "SELECT * FROM users
+            WHERE email = ?"
+        );
 
-        foreach ($users as $user) {
+        $stmt->execute([$email]);
 
-            if (($user['email'] ?? '') === $email) {
-                return $user;
-            }
-        }
-        return null;
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?: null;
     }
 
 /* FIND USER BY ID ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
     public function findById(string $id): ?array
     {
-        $users = $this->getAll();
+        $stmt = $this->connection->prepare(
+            "SELECT * FROM users
+            WHERE id = ?"
+        );
 
-        foreach ($users as $user) {
+        $stmt->execute([$id]);
 
-            if (($user['id'] ?? '') === $id) {
-                return $user;
-            }
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        }
-        return null;
+        return $user ?: null;
     }
 
 /* GENERATE NEXT USER ID ----------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -77,7 +94,11 @@ class UserRepository
 
         $lastId = $lastUser['id'] ?? 'USR-00000';
 
-        $number = (int) str_replace('USR-', '', $lastId);
+        $number = (int) str_replace(
+            'USR-',
+            '',
+            $lastId
+        );
 
         $nextNumber = $number + 1;
 
