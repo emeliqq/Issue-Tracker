@@ -22,6 +22,7 @@ A web application for tracking, managing, and organizing software issues.
 * JavaScript
 * Docker
 * Docker Compose
+* GitHub Actions
 
 ## Project Structure
 
@@ -41,16 +42,14 @@ Issue and user data are stored in a MySQL database.
 * Docker Desktop
 * Git
 
-### Start the application
-
-Clone the repository:
+### Clone the repository
 
 ```bash
-git clone <repository-url>
-cd issue-tracker
+git clone https://github.com/emeliqq/Issue-Tracker.git
+cd Issue-Tracker
 ```
 
-Start containers:
+### Start the application
 
 ```bash
 docker compose up -d
@@ -62,7 +61,7 @@ The application will be available at:
 http://localhost:8080/public
 ```
 
-### Stop containers
+### Stop the application
 
 ```bash
 docker compose down
@@ -76,8 +75,24 @@ The database schema is automatically created during the first startup using:
 database/issue_tracker.sql
 ```
 
-MySQL data is stored in a persistent Docker volume, so data remains available after container restarts.
+MySQL data is stored in a persistent Docker volume, so users and issues remain available after container restarts.
+
+## Continuous Integration
+
+The project uses GitHub Actions for continuous integration.
+
+On every push to the repository, GitHub automatically builds the Docker image and verifies that the application can be successfully containerized.
+
+## Security
+
+Implemented security mechanisms:
+
+* Password hashing using PHP `password_hash()`
+* Password verification using PHP `password_verify()`
+* Prepared SQL statements (PDO)
+* Session-based authentication
+* Output escaping using `htmlspecialchars()`
 
 ## Goal
 
-The goal of this project is to build a scalable and extendable issue tracking system while learning web development, containerization, and cloud deployment concepts.
+The goal of this project is to build a scalable and extendable issue tracking system while learning web development, containerization, CI/CD pipelines, and cloud deployment concepts.
