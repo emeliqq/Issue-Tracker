@@ -6,43 +6,78 @@ A web application for tracking, managing, and organizing software issues.
 
 * User registration and authentication
 * Create new issues
-* View a list of all issues
+* View all issues
 * View issue details
-* Edit issue information
-* Update issue status (Open, In Progress, Resolved)
-* Update issue severity (Low, Medium, High)
 * Assign issues to users
-* Dashboard with personal issue overview
-* Issue filtering and search
+* Update issue status
+* Update issue severity
+* Dashboard with reported and assigned issues
 
 ## Technologies
 
-* PHP
+* PHP 8
+* MySQL 8
 * HTML
 * CSS
 * JavaScript
-* JSON (web version)
-* MySQL (development and cloud version)
+* Docker
+* Docker Compose
 
 ## Project Structure
 
-The application is designed with a modular architecture that supports migration from JSON-based storage to a relational database.
+The application follows a modular architecture with separate layers for:
 
-## Branches
+* Models
+* Views
+* Configuration
+* Database access
 
-### web
+Issue and user data are stored in a MySQL database.
 
-Web application version using JSON file storage.
+## Running the Project
 
-### dev
+### Requirements
 
-Development branch containing:
+* Docker Desktop
+* Git
 
-* MySQL database integration
-* Relational data model
-* Cloud deployment preparation
-* Docker and CI/CD development
+### Start the application
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+cd issue-tracker
+```
+
+Start containers:
+
+```bash
+docker compose up -d
+```
+
+The application will be available at:
+
+```text
+http://localhost:8080/public
+```
+
+### Stop containers
+
+```bash
+docker compose down
+```
+
+## Database
+
+The database schema is automatically created during the first startup using:
+
+```text
+database/issue_tracker.sql
+```
+
+MySQL data is stored in a persistent Docker volume, so data remains available after container restarts.
 
 ## Goal
 
-The goal of this project is to build a scalable and extendable issue tracking system while learning web development, database design, containerization, CI/CD pipelines, and cloud deployment concepts.
+The goal of this project is to build a scalable and extendable issue tracking system while learning web development, containerization, and cloud deployment concepts.
