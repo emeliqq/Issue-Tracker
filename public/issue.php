@@ -114,7 +114,7 @@ foreach ($users as $user) {
         href="assets/css/issue.css"
         
     >
-    <link rel="stylesheet" href="/Issue-Tracker/public/assets/css/global.css">
+    <link rel="stylesheet" href="/public/assets/css/global.css">
 
 </head>
 <body>

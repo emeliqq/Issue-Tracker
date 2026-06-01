@@ -9,9 +9,9 @@ class Database
         if (self::$connection === null) {
 
             self::$connection = new PDO(
-                'mysql:host=localhost;dbname=issue_tracker;charset=utf8',
+                'mysql:host=db;dbname=issue_tracker;charset=utf8',
                 'root',
-                ''
+                'root'
             );
         }
 

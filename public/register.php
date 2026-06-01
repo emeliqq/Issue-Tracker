@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'password' => password_hash(
                 $password,
                 PASSWORD_DEFAULT
-            )
+            ),
+            'created_at' => date('Y-m-d H:i:s')
         ];
 
         $repo->add($newUser);
@@ -73,10 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Register</title>
     <link
         rel="stylesheet"
-        href="/issue-tracker/public/assets/css/auth.css"
+        href="/public/assets/css/auth.css"
     >
 </head>
-<body>
 
 <body>
 

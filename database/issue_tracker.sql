@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 31, 2026 at 03:11 PM
+-- Generation Time: Maj 31, 2026 at 03:18 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -40,17 +40,6 @@ CREATE TABLE `issues` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `issues`
---
-
-INSERT INTO `issues` (`id`, `summary`, `description`, `steps_to_reproduce`, `status_id`, `severity_id`, `reporter_id`, `assignee_id`, `updater_id`, `created_at`, `updated_at`) VALUES
-('QA-00001', 'kot mi uciek', 'kot ciek mi', 'uciek mi kot', 3, 2, 'USR-00001', NULL, 'USR-00001', '2026-05-31 14:07:06', '2026-05-31 14:42:58'),
-('QA-00002', 'ktos zesral sie jajecznica', 'ktos zesral sie jajecznica', 'ktos zesral sie jajecznica', 1, 3, 'USR-00001', NULL, NULL, '2026-05-31 14:48:32', NULL),
-('QA-00003', 'kora je', 'kora je', 'kora je', 1, 2, 'USR-00001', NULL, NULL, '2026-05-31 14:48:43', NULL),
-('QA-00004', 'missing ', 'missing ', 'missing ', 1, 1, 'USR-00001', NULL, NULL, '2026-05-31 14:49:03', NULL),
-('QA-00005', 'ergergfe444', 'ergergppppppppppppppppppppppppppppppppppppppp\r\n\r\n\r\nlooos\r\n90', 'ergerger\r\nlol', 2, 2, 'USR-00001', 'USR-00001', 'USR-00001', '2026-05-31 14:49:19', '2026-05-31 15:02:03');
 
 -- --------------------------------------------------------
 
@@ -106,13 +95,6 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `created_at`) VALUES
-('USR-00001', 'Emilia', 'Jasińska', 'emilia.jasia@gmail.com', '$2y$10$IBJY718QsgAEipMkcZGJVO32oWoUeWg83k/eBMHJdMvZ3oZdBUB8O', NULL);
 
 --
 -- Indeksy dla zrzutów tabel

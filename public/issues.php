@@ -12,7 +12,7 @@ if (!isset($_SESSION['user'])) {
 
 /* DEPENDENCIES ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-require '../app/views/partials/header.php'; 
+
 
 require_once '../app/models/IssueRepository.php';
 
@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: issues.php');
     exit;
 }
+
+
 
 /* LOAD ISSUES ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -176,6 +178,8 @@ if ($assignmentFilter === 'unassigned') {
             empty($issue['assignee_id'])
     );
 }
+
+require '../app/views/partials/header.php'; 
 
 ?>
 

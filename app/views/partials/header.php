@@ -12,7 +12,7 @@ $userName = $_SESSION['user']['first_name'] ?? '';
 
         <link
             rel="stylesheet"
-            href="/Issue-Tracker/public/assets/css/global.css"
+            href="/public/assets/css/global.css"
         >
     </head>
 

@@ -1,0 +1,27 @@
+services:
+
+  app:
+    build: .
+    container_name: issue-tracker-app
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+
+    container_name: issue-tracker-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: issue_tracker
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/issue_tracker.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:

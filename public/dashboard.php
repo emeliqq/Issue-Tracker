@@ -36,7 +36,7 @@ $assignedIssues = array_filter(
 <head>
     <link
     rel="stylesheet"
-    href="/Issue-Tracker/public/assets/css/dashboard.css"
+    href="/public/assets/css/dashboard.css"
 >
 </head>
 

@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login</title>
     <link
     rel="stylesheet"
-    href="/issue-tracker/public/assets/css/auth.css"
+    href="/public/assets/css/auth.css"
 >
 </head>
 <body>
