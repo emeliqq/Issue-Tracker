@@ -20,5 +20,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate PHP syntax
+        run: |
+          find . -name "*.php" -exec php -l {} \;
+
       - name: Build Docker image
         run: docker build -t issue-tracker .
