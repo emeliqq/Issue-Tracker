@@ -1,56 +1,79 @@
-# Issue Tracker (MySQL Version)
+# Issue Tracker (Development Branch)
 
-## Database Setup
+A web application for tracking, managing, and organizing software issues.
 
-1. Create a new database:
+This branch contains the current development version of the project, including Docker containerization, MySQL integration, and CI/CD pipeline configuration.
 
-```sql
-CREATE DATABASE issue_tracker;
+## Features
+
+* User registration and authentication
+* Create new issues
+* View all issues
+* View issue details
+* Assign issues to users
+* Update issue status
+* Update issue severity
+* Dashboard with reported and assigned issues
+
+## Technologies
+
+* PHP 8
+* MySQL 8
+* HTML
+* CSS
+* JavaScript
+* Docker
+* Docker Compose
+* GitHub Actions
+
+## Running the Project
+
+### Requirements
+
+* Docker Desktop
+* Git
+
+### Clone the repository
+
+```bash
+git clone https://github.com/emeliqq/Issue-Tracker.git
+cd Issue-Tracker
 ```
 
-2. Import the schema file:
+### Start the application
+
+```bash
+docker compose up -d
+```
+
+The application will be available at:
+
+```text
+http://localhost:8080/public
+```
+
+### Stop the application
+
+```bash
+docker compose down
+```
+
+## Database
+
+The database schema is automatically created during the first startup using:
 
 ```text
 database/issue_tracker.sql
 ```
 
-using phpMyAdmin or MySQL CLI.
+MySQL data is stored in a persistent Docker volume, so users and issues remain available after container restarts.
 
-## Database Configuration
+## Continuous Integration
 
-Verify connection settings in:
+The project uses GitHub Actions for continuous integration.
 
-```text
-config/Database.php
-```
-
-Default configuration:
-
-```php
-mysql:host=localhost;dbname=issue_tracker;charset=utf8
-username: root
-password:
-```
-
-## Running the Application
-
-1. Place the project inside:
-
-```text
-xampp/htdocs/
-```
-
-2. Start:
-
-* Apache
-* MySQL
-
-3. Open:
-
-```text
-http://localhost/issue-tracker/public
-```
+On every push to the repository, GitHub automatically builds the Docker image and verifies that the application can be successfully containerized.
 
 ## Notes
 
-This branch contains the MySQL-based version of the application and is used for further cloud deployment development.
+This branch is used for active development and testing before changes are merged into the main branch.
