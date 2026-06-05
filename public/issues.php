@@ -30,27 +30,32 @@ $assignmentFilter = $_GET['assignment'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $summary = $_POST['summary'] ?? '';
+
+    if (mb_strlen($summary) > 255) {
+
+        die('Summary cannot exceed 255 characters.');
+    }
+
     $newIssue = [
-    'id' => $repo->getNextId(),
-    'summary' => $_POST['summary'] ?? '',
-    'description' => $_POST['description'] ?? '',
-    'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
-    'priority' => $_POST['priority'] ?? 'Low',
-    'status' => 'Open',
-    'reporter' => $_SESSION['user']['id'],
-    'created_at' => date('Y-m-d H:i:s'),
-    'updated_at' => null,
-    'assignee' => null,
-    'updater' => null,
-];
+        'id' => $repo->getNextId(),
+        'summary' => $summary,
+        'description' => $_POST['description'] ?? '',
+        'steps_to_reproduce' => $_POST['steps_to_reproduce'] ?? '',
+        'priority' => $_POST['priority'] ?? 'Low',
+        'status' => 'Open',
+        'reporter' => $_SESSION['user']['id'],
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => null,
+        'assignee' => null,
+        'updater' => null,
+    ];
 
     $repo->add($newIssue);
 
     header('Location: issues.php');
     exit;
 }
-
-
 
 /* LOAD ISSUES ------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -456,6 +461,7 @@ require '../app/views/partials/header.php';
                     name="summary"
                     placeholder="Issue summary"
                     required
+                    maxlength="255"
                 >
 
             </div>
