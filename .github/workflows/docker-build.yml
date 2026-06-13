@@ -6,10 +6,6 @@ branches:
 - dev
 - main
 
-pull_request:
-branches:
-- main
-
 jobs:
 build:
 
@@ -24,17 +20,27 @@ steps:
     run: |
       find . -name "*.php" -exec php -l {} \;
 
-  - name: Build Docker image
-    run: docker build -t issue-tracker .
 
-  - name: Deploy to Azure VM
-    if: github.ref == 'refs/heads/dev'
-    uses: appleboy/ssh-action@v1.0.3
-    with:
-      host: ${{ secrets.VM_HOST }}
-      username: ${{ secrets.VM_USER }}
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
-      script: |
-        cd /home/emilia/Issue-Tracker
-        git pull origin dev
-        docker compose up -d --build
+
+  - name: Setup SSH key
+    run: |
+      mkdir -p ~/.ssh
+      echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      chmod 600 ~/.ssh/id_rsa
+
+  - name: Deploy
+    env:
+      VM_IP: ${{ secrets.VM_HOST }}
+      SSH_USER: ${{ secrets.VM_USER }}
+
+    run: |
+      ssh -o StrictHostKeyChecking=no \
+      ${SSH_USER}@${VM_IP} <<EOF
+      set -e
+
+      cd /home/emilia/Issue-Tracker
+      git pull origin dev
+      docker compose up -d --build
+      docker build -t issue-tracker .
+
+      EOF
