@@ -1,28 +1,41 @@
-name: Docker Build
+name: Docker Build & Deploy
 
 on:
-  push:
-    branches:
-      - dev
-      - main
+push:
+branches:
+- dev
+- main
 
-  pull_request:
-    branches:
-      - main
+pull_request:
+branches:
+- main
 
 jobs:
-  build:
+build:
 
-    runs-on: ubuntu-latest
+```
+runs-on: ubuntu-latest
 
-    steps:
+steps:
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  - name: Checkout repository
+    uses: actions/checkout@v4
 
-      - name: Validate PHP syntax
-        run: |
-          find . -name "*.php" -exec php -l {} \;
+  - name: Validate PHP syntax
+    run: |
+      find . -name "*.php" -exec php -l {} \;
 
-      - name: Build Docker image
-        run: docker build -t issue-tracker .
+  - name: Build Docker image
+    run: docker build -t issue-tracker .
+
+  - name: Deploy to Azure VM
+    if: github.ref == 'refs/heads/dev'
+    uses: appleboy/ssh-action@v1.0.3
+    with:
+      host: ${{ secrets.VM_HOST }}
+      username: ${{ secrets.VM_USER }}
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
+      script: |
+        cd /home/emilia/Issue-Tracker
+        git pull origin dev
+        docker compose up -d --build
