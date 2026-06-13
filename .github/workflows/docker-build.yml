@@ -42,7 +42,7 @@ jobs:
         git pull origin dev
         docker compose build --no-cache
         docker compose up -d --build
-        docker build -t issue-tracker .
+        docker build -t issue-tracker 
         
 
         EOF
