@@ -1,46 +1,46 @@
 name: Docker Build & Deploy
 
 on:
-push:
-branches:
-- dev
-- main
+  push:
+    branches:
+    - dev
+    - main
 
 jobs:
-build:
+  build:
 
-runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-steps:
+    steps:
 
-  - name: Checkout repository
-    uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-  - name: Validate PHP syntax
-    run: |
-      find . -name "*.php" -exec php -l {} \;
+    - name: Validate PHP syntax
+      run: |
+        find . -name "*.php" -exec php -l {} \;
 
 
 
-  - name: Setup SSH key
-    run: |
-      mkdir -p ~/.ssh
-      echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      chmod 600 ~/.ssh/id_rsa
+    - name: Setup SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
-  - name: Deploy
-    env:
-      VM_IP: ${{ secrets.VM_HOST }}
-      SSH_USER: ${{ secrets.VM_USER }}
+    - name: Deploy
+      env:
+        VM_IP: ${{ secrets.VM_HOST }}
+        SSH_USER: ${{ secrets.VM_USER }}
 
-    run: |
-      ssh -o StrictHostKeyChecking=no \
-      ${SSH_USER}@${VM_IP} <<EOF
-      set -e
+      run: |
+        ssh -o StrictHostKeyChecking=no \
+        ${SSH_USER}@${VM_IP} <<EOF
+        set -e
 
-      cd /home/emilia/Issue-Tracker
-      git pull origin dev
-      docker compose up -d --build
-      docker build -t issue-tracker .
+        cd /home/emilia/Issue-Tracker
+        git pull origin dev
+        docker compose up -d --build
+        docker build -t issue-tracker .
 
-      EOF
+        EOF
