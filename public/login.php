@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </h1>
 
     <p class="auth-subtitle">
-        Log in to continue
+        Zaloguj sie
     </p>
 
     <?php if (!empty($error)): ?>
